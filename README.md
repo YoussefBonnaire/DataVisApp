@@ -1,6 +1,6 @@
 # f21sc-2021-22-CW2
 
-A blank project with spec for CW2. Fork this repo to version-control your code (pair CW) and to ask questions through gitlab-student commit messages.
+Project for the pair jm232 and yb2010, contains python files with functionality for the CW2 specifications.
 
 ## Implement a Data Analysis tool for document tracking data in Python.
 

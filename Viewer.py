@@ -46,7 +46,6 @@ def Display_continents(df):
         return plt.pyplot.show()
     except IndexError as error:
         raise Exception('No views for this file') from error
-    return None
 
 
 # Views by browser: In this task we want to identify the most popular browser. To this end, the
@@ -73,7 +72,6 @@ def Display_browser(document):
         return plt.pyplot.show()
     except IndexError as error:
         raise Exception('No views for this file') from error
-
 
 
 def views(document):
