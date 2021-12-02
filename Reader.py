@@ -6,5 +6,7 @@ import pandas as pd
 dataset = pd.read_json('issuu_cw2.json', lines=True)
 
 def top10():
-
-    return None
+    df = dataset.copy()
+    df = df[df.event_type == 'pagereadtime']
+    user_times = pd.DataFrame(df.groupby('visitor_uuid').event_readtime.sum()).nlargest(10,'event_readtime')
+    return user_times
