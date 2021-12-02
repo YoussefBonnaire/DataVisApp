@@ -22,9 +22,10 @@ def Display_countries(document):
         ax.set_xlabel('Countries')
         ax.set_title('Views by country')
         plt.pyplot.show()
+
+        return plt.pyplot.show(), df
     except IndexError as error:
         raise Exception('No views for this file') from error
-    return df
 
 
 # Use the data you have collected in the previous task, group the countries by continent, and
@@ -41,6 +42,8 @@ def Display_continents(df):
         ax.set_xlabel('Continents')
         ax.set_title('Views by Continents')
         plt.pyplot.show()
+
+        return plt.pyplot.show()
     except IndexError as error:
         raise Exception('No views for this file') from error
     return None
@@ -66,9 +69,11 @@ def Display_browser(document):
         ax.set_xlabel('browsers')
         ax.set_title('Views by Browser')
         plt.pyplot.show()
+
+        return plt.pyplot.show()
     except IndexError as error:
         raise Exception('No views for this file') from error
-    return None
+
 
 
 def views(document):
