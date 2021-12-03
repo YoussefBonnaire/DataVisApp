@@ -9,5 +9,9 @@ dataset = pd.read_json('issuu_cw2.json', lines=True)
 def top10():
     df = dataset.copy()
     df = df[df.event_type == 'pagereadtime']
-    user_times = pd.DataFrame(df.groupby('visitor_uuid').event_readtime.sum()).nlargest(10, 'event_readtime')
+    df.rename(columns={'event_readtime': 'Total time spent reading', 'visitor_uuid': 'User Id'}, inplace=True)
+    user_times = pd.DataFrame(df.groupby('User Id')['Total time spent reading'].sum()).nlargest(10,
+                                                                                                'Total time spent '
+                                                                                                'reading')
+    user_times = user_times.reset_index()
     return user_times

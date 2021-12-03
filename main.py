@@ -5,9 +5,12 @@ import Viewer
 def main():
     """ Testing different methods """
     document = '140228202800-6ef39a241f35301a9a42cd0ed21e5fb0'
-    plot_countries, country_group = Viewer.Get_countries(document)
-    plot_continents = Viewer.Get_continents(country_group)
-    plot_browser = Viewer.Get_browser(document)
+    country_group, df = Viewer.Get_countries(document)
+    print(country_group)
+    continents = Viewer.Get_continents(df)
+    print(continents)
+    browsers = Viewer.Get_browser(document)
+    print(browsers)
 
     top10 = Reader.top10()
     print(top10)
