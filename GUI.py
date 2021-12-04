@@ -8,7 +8,6 @@ import Reader
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
-
 import Viewer
 
 
@@ -35,6 +34,7 @@ class MyInterface:
         self.button_colour = '#111b55'
         self.view_by = StringVar()
         self.Drop_Down = StringVar()
+        self.canvas = Canvas(self.master)
         self.body()
 
         # Main
@@ -63,10 +63,10 @@ class MyInterface:
 
     def body(self):
         # Configure grid
-        self.master.rowconfigure(0, weight=2)
+        self.master.rowconfigure(0, weight=3)
         self.master.rowconfigure(1, weight=1)
         self.master.rowconfigure(2, weight=1)
-        self.master.rowconfigure(3, weight=8)
+        self.master.rowconfigure(3, weight=10)
         self.master.rowconfigure(4, weight=1)
         self.master.rowconfigure(5, weight=2)
         self.master.columnconfigure(tuple(range(60)), weight=1)
@@ -111,15 +111,20 @@ class MyInterface:
         exit_button = Button(self.master, text='Exit')
         exit_button.bind('<Button-1>', self.closeGUI)
 
+        # Canvas
+        self.canvas = Canvas(self.master, bg=self.background)
+
         # Positioning
         title_lab.grid(row=0, column=0, columnspan=101, sticky="news")
-        doc_id_lab.grid(row=1, column=0, sticky="NE")
-        document_id.grid(row=1, column=1, sticky="NE")
-        display.grid(row=1, column=2, sticky="NE")
-        view_lab.grid(row=1, column=3, sticky="NE")
-        view_menu.grid(row=1, column=4, sticky="NE")
+        doc_id_lab.grid(row=1, column=0, sticky="news", pady=10)
+        document_id.grid(row=1, column=1, sticky="news", pady=10)
+        display.grid(row=1, column=2, sticky="news", pady=10)
+        view_lab.grid(row=1, column=3, sticky="news", pady=10)
+        view_menu.grid(row=1, column=4, sticky="news", pady=10)
 
-        reader.grid(row=2, column=1, columnspan=3, sticky="N")
+        reader.grid(row=2, column=1, columnspan=3, sticky="news", pady=10)
+
+        self.canvas.grid(row=3, column=0, columnspan=5, sticky='news')
 
         left_seperation.grid(row=1, column=5, rowspan=4, sticky="news")
         bottom_bar.grid(row=5, column=0, columnspan=101, sticky="news")
@@ -141,33 +146,25 @@ class MyInterface:
 
     def reader_display(self, event):
         top10 = Reader.top10()
-        # top10_list = Label(self.master, text=top10.to_string(), anchor='center', font=100,
-        #                    width=24, bg=self.frame_background, fg=self.text_colour)
-        # top10_list.grid(row=3, column=0, columnspan=5)
         f = Frame(self.master)
-        f.grid(row=3, column=0, columnspan=5)
-        self.table = pt = Table(f, dataframe=top10,
-                                showtoolbar=True, showstatusbar=True)
+        f.grid(row=3, column=0, columnspan=5, sticky='news')
+        self.canvas = pt = Table(f, dataframe=top10,
+                                 showtoolbar=True, showstatusbar=True)
         pt.show()
 
     def country_click(self):
         doc = self.document.get()
         country_group, _ = Viewer.Get_countries(doc)
 
-        fr_plot = Frame(self.master)
-        fr_plot.grid(row=3, column=0, columnspan=5, sticky='news')
         fig = Figure()
         ax1 = fig.add_subplot(111)
-        canvas = FigureCanvasTkAgg(fig, fr_plot)
         if type(country_group) is not str:
             country_group.plot(kind='bar', ax=ax1)
             ax1.set_ylabel('Number of viewers')
             ax1.set_xlabel('Countries')
             ax1.set_title('Views by country')
-            toolbar = NavigationToolbar2Tk(canvas, self.master, pack_toolbar=False)
-            toolbar.update()
-            toolbar.grid(row=4, column=0, columnspan=5, sticky='news')
-            canvas._tkcanvas.grid(row=3, column=0, columnspan=5, sticky='news')
+
+            self.draw_canvas(fig, self.master)
         else:
             no_views = Label(self.master, text=country_group, anchor='center', font=100,
                              width=24, bg=self.frame_background, fg=self.text_colour)
@@ -178,20 +175,15 @@ class MyInterface:
         _, countries = Viewer.Get_countries(doc)
         continent_groups = Viewer.Get_continents(countries)
 
-        fr_plot = Frame(self.master)
-        fr_plot.grid(row=3, column=0, columnspan=5, sticky='news')
         fig = Figure()
         ax1 = fig.add_subplot(111)
-        canvas = FigureCanvasTkAgg(fig, fr_plot)
         if type(continent_groups) is not str:
             continent_groups.plot(kind='bar', ax=ax1)
             ax1.set_ylabel('Number of viewers')
             ax1.set_xlabel('Continents')
             ax1.set_title('Views by Continents')
-            toolbar = NavigationToolbar2Tk(canvas, self.master, pack_toolbar=False)
-            toolbar.update()
-            toolbar.grid(row=4, column=0, columnspan=5, sticky='news')
-            canvas._tkcanvas.grid(row=3, column=0, columnspan=5, sticky='news')
+
+            self.draw_canvas(fig, self.master)
         else:
             no_views = Label(self.master, text=continent_groups, anchor='center', font=100,
                              width=24, bg=self.frame_background, fg=self.text_colour)
@@ -201,20 +193,15 @@ class MyInterface:
         doc = self.document.get()
         browser_group = Viewer.Get_browser(doc)
 
-        fr_plot = Frame(self.master)
-        fr_plot.grid(row=3, column=0, columnspan=5, sticky='news')
         fig = Figure()
         ax1 = fig.add_subplot(111)
-        canvas = FigureCanvasTkAgg(fig, fr_plot)
         if type(browser_group) is not str:
             browser_group.plot(kind='bar', ax=ax1)
             ax1.set_ylabel('Number of viewers')
             ax1.set_xlabel('Browsers')
             ax1.set_title('Views by Browsers')
-            toolbar = NavigationToolbar2Tk(canvas, self.master, pack_toolbar=False)
-            toolbar.update()
-            toolbar.grid(row=4, column=0, columnspan=5, sticky='news')
-            canvas._tkcanvas.grid(row=3, column=0, columnspan=5, sticky='news')
+
+            self.draw_canvas(fig, self.master)
         else:
             no_views = Label(self.master, text=browser_group, anchor='center', font=100,
                              width=24, bg=self.frame_background, fg=self.text_colour)
@@ -226,12 +213,6 @@ class MyInterface:
         continent_groups = Viewer.Get_continents(countries)
         browser_group = Viewer.Get_browser(doc)
 
-        # unfinished = Label(self.master, text='Functionality not finished', anchor='center', font=100,
-        # unfinished.grid(row=3, column=0, columnspan=5)
-        #                    width=24, bg=self.frame_background, fg=self.text_colour)
-
-        fr_plot = Frame(self.master)
-        fr_plot.grid(row=3, column=0, columnspan=5, sticky='news')
         fig = Figure()
         ax1 = fig.add_subplot(131)
         ax2 = fig.add_subplot(132)
@@ -252,15 +233,19 @@ class MyInterface:
             ax3.set_xlabel('Browsers')
             ax3.set_title('Views by Browsers')
 
-            canvas = FigureCanvasTkAgg(fig, fr_plot)
-            toolbar = NavigationToolbar2Tk(canvas, self.master, pack_toolbar=False)
-            toolbar.update()
-            toolbar.grid(row=4, column=0, columnspan=5, sticky='news')
-            canvas._tkcanvas.grid(row=3, column=0, columnspan=5, sticky='news')
+            self.draw_canvas(fig, self.master)
         else:
             no_views = Label(self.master, text=continent_groups, anchor='center', font=100,
                              width=24, bg=self.frame_background, fg=self.text_colour)
             no_views.grid(row=3, column=0, columnspan=5)
+
+    def draw_canvas(self, fig, plot):
+        self.canvas = FigureCanvasTkAgg(fig, plot)
+        self.canvas.draw()
+        self.canvas.get_tk_widget().grid(row=3, column=0, columnspan=5, sticky='news', ipadx=0, ipady=0)
+        toolbar = NavigationToolbar2Tk(self.canvas, self.master, pack_toolbar=False)
+        toolbar.update()
+        toolbar.grid(row=4, column=0, columnspan=5, sticky='news')
 
     def closeGUI(self, event):
         self.master.destroy()
