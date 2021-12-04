@@ -83,7 +83,7 @@ class MyInterface:
         doc_id_lab = Label(self.master, text='Document id:', bg=self.background, fg=self.text_colour,
                            font='100 12 bold')
 
-        database_file_lab = Label(self.master, text='Insert database:', bg=self.background, fg=self.text_colour,
+        database_file_lab = Label(self.master, text='Database file name:', bg=self.background, fg=self.text_colour,
                                   font='100 12 bold')
 
         view_lab = Label(self.master, text='display by:', bg=self.background, fg=self.text_colour)
