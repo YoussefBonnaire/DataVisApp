@@ -27,6 +27,7 @@ class MyInterface:
         # Declaration of Variables
         self.master = master
         self.document = StringVar()
+        self.database = StringVar(master, value='issuu_cw2.json')
         self.background = '#000731'
         self.frame_background = '#010523'
         self.text_colour = '#aaa0c7'
@@ -82,10 +83,14 @@ class MyInterface:
         doc_id_lab = Label(self.master, text='Document id:', bg=self.background, fg=self.text_colour,
                            font='100 12 bold')
 
+        database_file_lab = Label(self.master, text='Insert database:', bg=self.background, fg=self.text_colour,
+                                  font='100 12 bold')
+
         view_lab = Label(self.master, text='display by:', bg=self.background, fg=self.text_colour)
 
         # Entry boxes
         document_id = Entry(self.master, width=45, bg=self.entry_colour, textvariable=self.document)
+        database_file = Entry(self.master, width=45, bg=self.entry_colour, textvariable=self.database)
 
         # Dropdown
         view_choice = {'Country', 'Continent', 'Browser', 'All'}
@@ -116,13 +121,16 @@ class MyInterface:
 
         # Positioning
         title_lab.grid(row=0, column=0, columnspan=101, sticky="news")
-        doc_id_lab.grid(row=1, column=0, sticky="news", pady=10)
-        document_id.grid(row=1, column=1, sticky="news", pady=10)
-        display.grid(row=1, column=2, sticky="news", pady=10)
-        view_lab.grid(row=1, column=3, sticky="news", pady=10)
-        view_menu.grid(row=1, column=4, sticky="news", pady=10)
 
-        reader.grid(row=2, column=1, columnspan=3, sticky="news", pady=10)
+        database_file_lab.grid(row=1, column=0, sticky="news", pady=10, padx=2)
+        database_file.grid(row=1, column=1, sticky="news", pady=10, padx=2)
+        reader.grid(row=1, column=2, columnspan=3, sticky="news", pady=10, padx=2)
+
+        doc_id_lab.grid(row=2, column=0, sticky="news", pady=10, padx=2)
+        document_id.grid(row=2, column=1, sticky="news", pady=10, padx=2)
+        display.grid(row=2, column=2, sticky="news", pady=10, padx=2)
+        view_lab.grid(row=2, column=3, sticky="news", pady=10, padx=2)
+        view_menu.grid(row=2, column=4, sticky="news", pady=10, padx=2)
 
         self.canvas.grid(row=3, column=0, columnspan=5, sticky='news')
 
@@ -154,7 +162,8 @@ class MyInterface:
 
     def country_click(self):
         doc = self.document.get()
-        country_group, _ = Viewer.Get_countries(doc)
+        database = self.database.get()
+        country_group, _ = Viewer.Get_countries(doc, database)
 
         fig = Figure()
         ax1 = fig.add_subplot(111)
@@ -172,7 +181,8 @@ class MyInterface:
 
     def continent_click(self):
         doc = self.document.get()
-        _, countries = Viewer.Get_countries(doc)
+        database = self.database.get()
+        _, countries = Viewer.Get_countries(doc, database)
         continent_groups = Viewer.Get_continents(countries)
 
         fig = Figure()
@@ -191,7 +201,8 @@ class MyInterface:
 
     def browser_click(self):
         doc = self.document.get()
-        browser_group = Viewer.Get_browser(doc)
+        database = self.database.get()
+        browser_group = Viewer.Get_browser(doc, database)
 
         fig = Figure()
         ax1 = fig.add_subplot(111)
