@@ -25,12 +25,12 @@ def Get_browser(document, database='issuu_cw2.json'):
     df.visitor_useragent = df.visitor_useragent.str.split('/').str[0]
     browsers = df.groupby(['visitor_useragent']).size()
     if browsers.empty:
-        country_group = 'No views for this document'
+        browsers = 'No views for this document'
     return browsers
 
 
 def views(document, database='issuu_cw2.json'):
-    df = dataset.copy()
+    df = pd.read_json(database, lines=True)
     df = df[df.subject_doc_id == document]
     df = df[df.event_type == 'read']
     return df
