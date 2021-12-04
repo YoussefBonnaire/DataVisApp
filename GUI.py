@@ -28,6 +28,9 @@ class MyInterface:
         self.master = master
         self.document = StringVar()
         self.database = StringVar(master, value='issuu_cw2.json')
+        self.document_also = StringVar()
+        self.user_also = StringVar()
+        self.database_also = StringVar(master, value='issuu_cw2.json')
         self.background = '#000731'
         self.frame_background = '#010523'
         self.text_colour = '#aaa0c7'
@@ -35,7 +38,8 @@ class MyInterface:
         self.button_colour = '#111b55'
         self.view_by = StringVar()
         self.Drop_Down = StringVar()
-        self.canvas = Canvas(self.master)
+        self.left_canvas = Canvas(self.master)
+        self.right_canvas = Canvas(self.master)
         self.body()
 
         # Main
@@ -67,76 +71,114 @@ class MyInterface:
         self.master.rowconfigure(0, weight=3)
         self.master.rowconfigure(1, weight=1)
         self.master.rowconfigure(2, weight=1)
-        self.master.rowconfigure(3, weight=10)
-        self.master.rowconfigure(4, weight=1)
-        self.master.rowconfigure(5, weight=2)
-        self.master.columnconfigure(tuple(range(60)), weight=1)
+        self.master.rowconfigure(3, weight=1)
+        self.master.rowconfigure(4, weight=10)
+        self.master.rowconfigure(5, weight=1)
+        self.master.rowconfigure(6, weight=2)
+        self.master.columnconfigure(tuple(range(13)), weight=1)
 
         # Frame
-        left_seperation = Label(self.master, anchor='center', bg=self.frame_background)
+        separation = Label(self.master, anchor='center', bg=self.frame_background)
         bottom_bar = Label(self.master, anchor='center', bg=self.frame_background)
 
         # Labels
         title_lab = Label(self.master, text='Welcome to the Data Analyser', anchor='center', font=100,
-                          width=24, bg=self.frame_background, fg=self.text_colour)
+                          width=29, bg=self.frame_background, fg=self.text_colour)
+        left_subtitle_lab = Label(self.master, text='Views & Top 10', anchor='center', font=100,
+                                  width=29, bg=self.frame_background, fg=self.text_colour)
+        right_subtitle_lab = Label(self.master, text='Also Likes', anchor='center', font=100,
+                                   width=29, bg=self.frame_background, fg=self.text_colour)
 
         doc_id_lab = Label(self.master, text='Document id:', bg=self.background, fg=self.text_colour,
-                           font='100 12 bold')
+                           font='100 12 bold', width=13)
 
         database_file_lab = Label(self.master, text='Database file name:', bg=self.background, fg=self.text_colour,
-                                  font='100 12 bold')
+                                  font='100 12 bold', width=20)
 
-        view_lab = Label(self.master, text='display by:', bg=self.background, fg=self.text_colour)
+        doc_id_lab_also = Label(self.master, text='Document id:', bg=self.background, fg=self.text_colour,
+                                font='100 12 bold', width=13)
+        user_id_lab_also = Label(self.master, text='User id:', bg=self.background, fg=self.text_colour,
+                                 font='100 12 bold', width=9)
+
+        database_file_lab_also = Label(self.master, text='Database file name:', bg=self.background, fg=self.text_colour,
+                                       font='100 12 bold', width=20)
+
+        view_lab = Label(self.master, text='Display by:', bg=self.background, fg=self.text_colour)
 
         # Entry boxes
-        document_id = Entry(self.master, width=45, bg=self.entry_colour, textvariable=self.document)
-        database_file = Entry(self.master, width=45, bg=self.entry_colour, textvariable=self.database)
+        document_id = Entry(self.master, bg=self.entry_colour, textvariable=self.document)
+        database_file = Entry(self.master, bg=self.entry_colour, textvariable=self.database)
+
+        document_id_also = Entry(self.master, bg=self.entry_colour, textvariable=self.document_also)
+        user_id_also = Entry(self.master, bg=self.entry_colour, textvariable=self.user_also)
+        database_file_also = Entry(self.master, bg=self.entry_colour, textvariable=self.database_also)
 
         # Dropdown
         view_choice = {'Country', 'Continent', 'Browser', 'All'}
         self.Drop_Down.set('Country')  # set the default option
         view_menu = OptionMenu(self.master, self.Drop_Down, *view_choice)
         view_menu.config(bg=self.button_colour, activebackground=self.frame_background, fg=self.text_colour,
-                         activeforeground=self.text_colour, width=7)
+                         activeforeground=self.text_colour, width=10)
         view_menu['menu'].config(bg=self.entry_colour, fg=self.text_colour, borderwidth=0, activeborderwidth=0,
                                  activeforeground=self.text_colour, activebackground=self.frame_background)
         view_menu["highlightthickness"] = 0
 
         # Buttons
-        display = Button(self.master, text='Display', width=7, bg=self.button_colour,
+        display = Button(self.master, text='Display', width=8, bg=self.button_colour,
                          activebackground=self.frame_background, fg=self.text_colour,
                          activeforeground=self.text_colour)
         display.bind('<Button-1>', self.view_display)
 
-        reader = Button(self.master, text='Show top 10 most avid reader', bg=self.button_colour,
+        reader = Button(self.master, text='Show Top 10 Readers', bg=self.button_colour,
                         activebackground=self.frame_background, fg=self.text_colour,
-                        activeforeground=self.text_colour)
+                        activeforeground=self.text_colour, width=28)
         reader.bind('<Button-1>', self.reader_display)
+
+        graph_doc = Button(self.master, text='Display Document View', width=21, bg=self.button_colour,
+                           activebackground=self.frame_background, fg=self.text_colour,
+                           activeforeground=self.text_colour)
+        graph_user = Button(self.master, text='Display User View', width=21, bg=self.button_colour,
+                            activebackground=self.frame_background, fg=self.text_colour,
+                            activeforeground=self.text_colour)
+
+        display.bind('<Button-1>', self.view_display)
 
         exit_button = Button(self.master, text='Exit')
         exit_button.bind('<Button-1>', self.closeGUI)
 
-        # Canvas
-        self.canvas = Canvas(self.master, bg=self.background)
-
         # Positioning
-        title_lab.grid(row=0, column=0, columnspan=101, sticky="news")
+        title_lab.grid(row=0, column=0, columnspan=13, sticky="news")
+        left_subtitle_lab.grid(row=1, column=0, columnspan=6, sticky="news")
+        right_subtitle_lab.grid(row=1, column=7, columnspan=6, sticky="news")
 
-        database_file_lab.grid(row=1, column=0, sticky="news", pady=10, padx=2)
-        database_file.grid(row=1, column=1, sticky="news", pady=10, padx=2)
-        reader.grid(row=1, column=2, columnspan=3, sticky="news", pady=10, padx=2)
+        database_file_lab.grid(row=2, column=0, sticky="news", pady=10, padx=2)
+        database_file.grid(row=2, column=1, sticky="news", pady=10, padx=2)
+        reader.grid(row=2, column=2, columnspan=3, sticky="news", pady=10, padx=2)
 
-        doc_id_lab.grid(row=2, column=0, sticky="news", pady=10, padx=2)
-        document_id.grid(row=2, column=1, sticky="news", pady=10, padx=2)
-        display.grid(row=2, column=2, sticky="news", pady=10, padx=2)
-        view_lab.grid(row=2, column=3, sticky="news", pady=10, padx=2)
-        view_menu.grid(row=2, column=4, sticky="news", pady=10, padx=2)
+        doc_id_lab.grid(row=3, column=0, sticky="news")
+        document_id.grid(row=3, column=1, sticky="news", pady=10, padx=2)
+        display.grid(row=3, column=2, sticky="news", pady=10, padx=2)
+        view_lab.grid(row=3, column=3, sticky="news", pady=10, padx=2)
+        view_menu.grid(row=3, column=4, sticky="news", pady=10, padx=2)
 
-        self.canvas.grid(row=3, column=0, columnspan=5, sticky='news')
+        self.left_canvas.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
-        left_seperation.grid(row=1, column=5, rowspan=4, sticky="news")
-        bottom_bar.grid(row=5, column=0, columnspan=101, sticky="news")
-        exit_button.grid(row=0, column=100, sticky="nw")
+        database_file_lab_also.grid(row=2, column=7, sticky="news", pady=10, padx=2)
+        database_file_also.grid(row=2, column=8, columnspan=6, sticky="news", pady=10, padx=2)
+
+        doc_id_lab_also.grid(row=3, column=7, sticky="news")
+        document_id_also.grid(row=3, column=8, sticky="news", pady=10, padx=2)
+        graph_doc.grid(row=3, column=9, sticky="news", pady=10, padx=2)
+
+        user_id_lab_also.grid(row=3, column=10, sticky="news", pady=10, padx=2)
+        user_id_also.grid(row=3, column=11, sticky="news", pady=10, padx=2)
+        graph_user.grid(row=3, column=12, sticky="news", pady=10, padx=2)
+
+        self.right_canvas.grid(row=4, column=6, columnspan=7, rowspan=2, sticky='news')
+
+        separation.grid(row=1, column=5, rowspan=5, columnspan=2, sticky="news")
+        bottom_bar.grid(row=6, column=0, columnspan=13, sticky="news")
+        exit_button.grid(row=0, column=12, sticky="ne")
 
     # def show_frame(self, cont):
     #     frame = self.frames[cont]
@@ -155,9 +197,9 @@ class MyInterface:
     def reader_display(self, event):
         top10 = Reader.top10()
         f = Frame(self.master)
-        f.grid(row=3, column=0, columnspan=5, sticky='news')
-        self.canvas = pt = Table(f, dataframe=top10,
-                                 showtoolbar=True, showstatusbar=True)
+        f.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
+        self.left_canvas = pt = Table(f, dataframe=top10,
+                                      showtoolbar=True, showstatusbar=True)
         pt.show()
 
     def country_click(self):
@@ -177,7 +219,7 @@ class MyInterface:
         else:
             no_views = Label(self.master, text=country_group, anchor='center', font=100,
                              width=24, bg=self.frame_background, fg=self.text_colour)
-            no_views.grid(row=3, column=0, columnspan=5)
+            no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def continent_click(self):
         doc = self.document.get()
@@ -197,7 +239,7 @@ class MyInterface:
         else:
             no_views = Label(self.master, text=continent_groups, anchor='center', font=100,
                              width=24, bg=self.frame_background, fg=self.text_colour)
-            no_views.grid(row=3, column=0, columnspan=5)
+            no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def browser_click(self):
         doc = self.document.get()
@@ -216,7 +258,7 @@ class MyInterface:
         else:
             no_views = Label(self.master, text=browser_group, anchor='center', font=100,
                              width=24, bg=self.frame_background, fg=self.text_colour)
-            no_views.grid(row=3, column=0, columnspan=5)
+            no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def all_click(self):
         doc = self.document.get()
@@ -235,26 +277,24 @@ class MyInterface:
             ax1.set_title('Views by Countries')
 
             continent_groups.plot(kind='bar', ax=ax2)
-            ax2.set_ylabel('Number of viewers')
             ax2.set_xlabel('Continent')
             ax2.set_title('Views by Continents')
 
             browser_group.plot(kind='bar', ax=ax3)
-            ax3.set_ylabel('Number of viewers')
             ax3.set_xlabel('Browsers')
             ax3.set_title('Views by Browsers')
 
             self.draw_canvas(fig, self.master)
         else:
-            no_views = Label(self.master, text=continent_groups, anchor='center', font=100,
+            no_views = Label(self.master, text=country_groups, anchor='center', font=100,
                              width=24, bg=self.frame_background, fg=self.text_colour)
-            no_views.grid(row=3, column=0, columnspan=5)
+            no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def draw_canvas(self, fig, plot):
-        self.canvas = FigureCanvasTkAgg(fig, plot)
-        self.canvas.draw()
-        self.canvas.get_tk_widget().grid(row=3, column=0, columnspan=5, sticky='news', ipadx=0, ipady=0)
-        toolbar = NavigationToolbar2Tk(self.canvas, self.master, pack_toolbar=False)
+        self.left_canvas = FigureCanvasTkAgg(fig, plot)
+        self.left_canvas.draw()
+        self.left_canvas.get_tk_widget().grid(row=3, column=0, columnspan=5, sticky='news', ipadx=0, ipady=0)
+        toolbar = NavigationToolbar2Tk(self.left_canvas, self.master, pack_toolbar=False)
         toolbar.update()
         toolbar.grid(row=4, column=0, columnspan=5, sticky='news')
 

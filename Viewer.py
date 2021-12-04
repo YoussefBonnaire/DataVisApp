@@ -24,6 +24,8 @@ def Get_browser(document, database='issuu_cw2.json'):
     df = views(document, database)
     df.visitor_useragent = df.visitor_useragent.str.split('/').str[0]
     browsers = df.groupby(['visitor_useragent']).size()
+    if browsers.empty:
+        country_group = 'No views for this document'
     return browsers
 
 
