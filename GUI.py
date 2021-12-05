@@ -92,8 +92,8 @@ class MyInterface:
 
         doc_id_lab = Label(self.master, text='Document id:', bg=self.background, fg=self.text_colour,
                            font='100 12 bold', width=13)
-        database_file_lab = Label(self.master, text='Database file name:', bg=self.background, fg=self.text_colour,
-                                  font='100 12 bold', width=20)
+        database_file_lab = Label(self.master, text='Database file:', bg=self.background, fg=self.text_colour,
+                                  font='100 12 bold', width=15)
 
         doc_id_lab_also = Label(self.master, text='Document id:', bg=self.background, fg=self.text_colour,
                                 font='100 12 bold', width=13)
@@ -101,8 +101,8 @@ class MyInterface:
                                  font='100 12 bold', width=9)
         sorting_lab_also = Label(self.master, text='Sorting type:', bg=self.background, fg=self.text_colour,
                                  font='100 12 bold', width=9)
-        database_file_lab_also = Label(self.master, text='Database file name:', bg=self.background, fg=self.text_colour,
-                                       font='100 12 bold', width=20)
+        database_file_lab_also = Label(self.master, text='Database file:', bg=self.background, fg=self.text_colour,
+                                       font='100 12 bold', width=15)
 
         view_lab = Label(self.master, text='Display by:', bg=self.background, fg=self.text_colour)
 
@@ -161,8 +161,8 @@ class MyInterface:
         right_subtitle_lab.grid(row=1, column=7, columnspan=6, sticky="news")
 
         database_file_lab.grid(row=2, column=0, sticky="news", pady=10, padx=2)
-        database_file.grid(row=2, column=1, sticky="news", pady=10, padx=2)
-        reader.grid(row=2, column=2, columnspan=3, sticky="news", pady=10, padx=2)
+        database_file.grid(row=2, column=1, columnspan=2, sticky="news", pady=10, padx=2)
+        reader.grid(row=2, column=3, columnspan=2, sticky="news", pady=10, padx=2)
 
         doc_id_lab.grid(row=3, column=0, sticky="news")
         document_id.grid(row=3, column=1, sticky="news", pady=10, padx=2)
