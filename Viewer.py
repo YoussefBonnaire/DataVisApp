@@ -13,7 +13,7 @@ def Get_countries(document, database='issuu_cw2.json'):
 
 
 def Get_continents(df):
-    if type(df) is str:
+    if df.empty:
         return 'No views for this document'
     continents = pd.DataFrame(df['visitor_country']).applymap(cconv.country_alpha2_to_continent_code)
     continent_groups = continents.groupby(['visitor_country']).size()

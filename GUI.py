@@ -31,9 +31,9 @@ class MyInterface:
         self.document_also = StringVar()
         self.user_also = StringVar()
         self.database_also = StringVar(master, value='issuu_cw2.json')
-        self.background = '#000731'
+        self.background = self.text_colour_buttons = '#ffffff'
         self.frame_background = '#010523'
-        self.text_colour = '#aaa0c7'
+        self.text_colour = '#000000'
         self.entry_colour = '#394381'
         self.button_colour = '#111b55'
         self.view_by = StringVar()
@@ -83,11 +83,11 @@ class MyInterface:
 
         # Labels
         title_lab = Label(self.master, text='Welcome to the Data Analyser', anchor='center', font=100,
-                          width=29, bg=self.frame_background, fg=self.text_colour)
+                          width=29, bg=self.frame_background, fg=self.text_colour_buttons)
         left_subtitle_lab = Label(self.master, text='Views & Top 10', anchor='center', font=100,
-                                  width=29, bg=self.frame_background, fg=self.text_colour)
+                                  width=29, bg=self.frame_background, fg=self.text_colour_buttons)
         right_subtitle_lab = Label(self.master, text='Also Likes', anchor='center', font=100,
-                                   width=29, bg=self.frame_background, fg=self.text_colour)
+                                   width=29, bg=self.frame_background, fg=self.text_colour_buttons)
 
         doc_id_lab = Label(self.master, text='Document id:', bg=self.background, fg=self.text_colour,
                            font='100 12 bold', width=13)
@@ -106,40 +106,40 @@ class MyInterface:
         view_lab = Label(self.master, text='Display by:', bg=self.background, fg=self.text_colour)
 
         # Entry boxes
-        document_id = Entry(self.master, bg=self.entry_colour, textvariable=self.document)
-        database_file = Entry(self.master, bg=self.entry_colour, textvariable=self.database)
+        document_id = Entry(self.master, bg=self.text_colour_buttons, textvariable=self.document)
+        database_file = Entry(self.master, bg=self.text_colour_buttons, textvariable=self.database)
 
-        document_id_also = Entry(self.master, bg=self.entry_colour, textvariable=self.document_also)
-        user_id_also = Entry(self.master, bg=self.entry_colour, textvariable=self.user_also)
-        database_file_also = Entry(self.master, bg=self.entry_colour, textvariable=self.database_also)
+        document_id_also = Entry(self.master, bg=self.text_colour_buttons, textvariable=self.document_also)
+        user_id_also = Entry(self.master, bg=self.text_colour_buttons, textvariable=self.user_also)
+        database_file_also = Entry(self.master, bg=self.text_colour_buttons, textvariable=self.database_also)
 
         # Dropdown
         view_choice = {'Country', 'Continent', 'Browser', 'All'}
         self.Drop_Down.set('Country')  # set the default option
         view_menu = OptionMenu(self.master, self.Drop_Down, *view_choice)
-        view_menu.config(bg=self.button_colour, activebackground=self.frame_background, fg=self.text_colour,
-                         activeforeground=self.text_colour, width=10)
-        view_menu['menu'].config(bg=self.entry_colour, fg=self.text_colour, borderwidth=0, activeborderwidth=0,
-                                 activeforeground=self.text_colour, activebackground=self.frame_background)
+        view_menu.config(bg=self.button_colour, activebackground=self.frame_background, fg=self.text_colour_buttons,
+                         activeforeground=self.text_colour_buttons, width=10)
+        view_menu['menu'].config(bg=self.entry_colour, fg=self.text_colour_buttons, borderwidth=0, activeborderwidth=0,
+                                 activeforeground=self.text_colour_buttons, activebackground=self.frame_background)
         view_menu["highlightthickness"] = 0
 
         # Buttons
         display = Button(self.master, text='Display', width=8, bg=self.button_colour,
-                         activebackground=self.frame_background, fg=self.text_colour,
-                         activeforeground=self.text_colour)
+                         activebackground=self.frame_background, fg=self.text_colour_buttons,
+                         activeforeground=self.text_colour_buttons)
         display.bind('<Button-1>', self.view_display)
 
         reader = Button(self.master, text='Show Top 10 Readers', bg=self.button_colour,
-                        activebackground=self.frame_background, fg=self.text_colour,
-                        activeforeground=self.text_colour, width=28)
+                        activebackground=self.frame_background, fg=self.text_colour_buttons,
+                        activeforeground=self.text_colour_buttons, width=28)
         reader.bind('<Button-1>', self.reader_display)
 
         graph_doc = Button(self.master, text='Display Document View', width=21, bg=self.button_colour,
-                           activebackground=self.frame_background, fg=self.text_colour,
-                           activeforeground=self.text_colour)
+                           activebackground=self.frame_background, fg=self.text_colour_buttons,
+                           activeforeground=self.text_colour_buttons)
         graph_user = Button(self.master, text='Display User View', width=21, bg=self.button_colour,
-                            activebackground=self.frame_background, fg=self.text_colour,
-                            activeforeground=self.text_colour)
+                            activebackground=self.frame_background, fg=self.text_colour_buttons,
+                            activeforeground=self.text_colour_buttons)
 
         display.bind('<Button-1>', self.view_display)
 
@@ -218,7 +218,7 @@ class MyInterface:
             self.draw_canvas(fig, self.master)
         else:
             no_views = Label(self.master, text=country_group, anchor='center', font=100,
-                             width=24, bg=self.frame_background, fg=self.text_colour)
+                             width=24, bg=self.background, fg=self.text_colour)
             no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def continent_click(self):
@@ -238,7 +238,7 @@ class MyInterface:
             self.draw_canvas(fig, self.master)
         else:
             no_views = Label(self.master, text=continent_groups, anchor='center', font=100,
-                             width=24, bg=self.frame_background, fg=self.text_colour)
+                             width=24, bg=self.background, fg=self.text_colour)
             no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def browser_click(self):
@@ -257,7 +257,7 @@ class MyInterface:
             self.draw_canvas(fig, self.master)
         else:
             no_views = Label(self.master, text=browser_group, anchor='center', font=100,
-                             width=24, bg=self.frame_background, fg=self.text_colour)
+                             width=24, bg=self.background, fg=self.text_colour)
             no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def all_click(self):
@@ -287,7 +287,7 @@ class MyInterface:
             self.draw_canvas(fig, self.master)
         else:
             no_views = Label(self.master, text=country_groups, anchor='center', font=100,
-                             width=24, bg=self.frame_background, fg=self.text_colour)
+                             width=24, bg=self.background, fg=self.text_colour)
             no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def draw_canvas(self, fig, plot):
