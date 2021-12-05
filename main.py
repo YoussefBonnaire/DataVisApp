@@ -5,7 +5,7 @@ import alsoLikes
 def main():
     """ Testing different methods """
     document = '140228202800-6ef39a241f35301a9a42cd0ed21e5fb0'
-    user = 'b2a24f14bb5c9ea3'
+    user = '2f63e0cca690da91'
     country_group, df = Viewer.Get_countries(document)
     print(country_group)
     continents = Viewer.Get_continents(df)
@@ -19,6 +19,9 @@ def main():
     print('Document 1 has been read by')
     users = alsoLikes.findReaders(documents[0])
     print(users)
+    alsoDocs = alsoLikes.alsoLikes(documents[0],None)
+    print('Users who like document 1 also like')
+    print(alsoDocs)
     # top10 = Reader.top10()
     # print(top10)
     return 0
