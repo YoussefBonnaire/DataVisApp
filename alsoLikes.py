@@ -1,25 +1,23 @@
 from collections import Counter
 
-import pandas as pd
-
 import Viewer as v
 
 
 # Returns the a list of visitor ids for the users
 # that have visited the document
-def findReaders(document, database):
-    df = v.views(document, database)
+def findReaders(document):
+    df = v.views(document)
     users = df['visitor_uuid']
-    return users
+    return users.values
 
 
 # Takes a visitorid and returns a list of documents
 # they have visited as a list of ids
-def userHasRead(user, database):
-    df = pd.read_json(database, lines=True)
+def userHasRead(user):
+    df = v.dataset.copy()
     df = df[df.visitor_uuid == user]
     documents = df['env_doc_id']
-    return documents
+    return documents.values
 
 
 # takes a list of document ids and sorts them
@@ -33,12 +31,12 @@ def sortDocuments(documents):
 # Takes a document and returns a list of the
 # ten documents that have been read by the most users
 # that have also read the input document
-def alsoLikes(document, database='issuu_cw2.json'):
-    users = findReaders(document, database)
+def alsoLikes(document):
+    users = findReaders(document)
     documents = []
     for user in users:
         # Not entirely sure views works on multiple documents but have not tested it on that at all so very well could
-        df = v.views(userHasRead(user, database))
+        df = v.views(userHasRead(user))
         documents.append(df.nlargest(10, df.groupby(['env_doc_id'])).size['env_doc_id'])
     # This may not work if sortDocuments is made for pandas df, you can test it the way I did in the main if you want
     documents = sortDocuments((documents)).Take(10)
