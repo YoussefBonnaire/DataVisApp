@@ -2,6 +2,8 @@ import pandas as pd
 import pycountry_convert as cconv
 
 
+# Takes in string for document and optionally database and returns grouped-by pandas dataframe to plot viewers by
+# country and a dataframe for continents to use.
 def Get_countries(document, database='issuu_cw2.json'):
     df = views(document, database)
     country_group = df.groupby(['visitor_country']).size()
@@ -10,6 +12,7 @@ def Get_countries(document, database='issuu_cw2.json'):
     return country_group, df
 
 
+# Takes in dataframe produced by Get_countries and outputs the continent version to plot the viewers by continent
 def Get_continents(df):
     if df.empty:
         return 'No views for this document'
@@ -18,6 +21,8 @@ def Get_continents(df):
     return continent_groups
 
 
+# Takes in string for document and optionally database and returns grouped-by pandas dataframe to plot viewers by
+# browser
 def Get_browser(document, database='issuu_cw2.json'):
     df = views(document, database)
     df.visitor_useragent = df.visitor_useragent.str.split('/').str[0]
@@ -27,6 +32,7 @@ def Get_browser(document, database='issuu_cw2.json'):
     return browsers
 
 
+# Helper function to reduce duplicate lines
 def views(document, database='issuu_cw2.json'):
     df = pd.read_json(database, lines=True)
     df = df[df.subject_doc_id == document]
