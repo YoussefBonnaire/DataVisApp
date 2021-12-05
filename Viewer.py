@@ -1,8 +1,6 @@
 import pandas as pd
 import pycountry_convert as cconv
 
-dataset = pd.read_json('issuu_cw2.json', lines=True)
-
 
 def Get_countries(document, database='issuu_cw2.json'):
     df = views(document, database)
