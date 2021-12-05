@@ -32,8 +32,10 @@ def sortDocuments(documents):
 # Takes a document and returns a list of the
 # ten documents that have been read by the most users
 # that have also read the input document
-def alsoLikes(document,sortF):
+def alsoLikes(document,user,sortF):
     users = findReaders(document)
+    if(user==None):
+        users.append(user)
     documents = []
     for user in users:
         # Not entirely sure views works on multiple documents but have not tested it on that at all so very well could

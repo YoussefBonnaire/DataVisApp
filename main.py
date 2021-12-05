@@ -19,7 +19,7 @@ def main():
     print('Document 1 has been read by')
     users = alsoLikes.findReaders(documents[0])
     print(users)
-    alsoDocs = alsoLikes.alsoLikes(documents[0],None)
+    alsoDocs = alsoLikes.alsoLikes(documents[0],None,None)
     print('Users who like document 1 also like')
     print(alsoDocs)
     # top10 = Reader.top10()
