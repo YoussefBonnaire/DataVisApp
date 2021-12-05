@@ -37,7 +37,8 @@ class MyInterface:
         self.entry_colour = '#394381'
         self.button_colour = '#111b55'
         self.view_by = StringVar()
-        self.Drop_Down = StringVar()
+        self.Drop_Down_views = StringVar()
+        self.Drop_Down_sort = StringVar()
         self.left_canvas = Canvas(self.master)
         self.right_canvas = Canvas(self.master)
         self.body()
@@ -91,7 +92,6 @@ class MyInterface:
 
         doc_id_lab = Label(self.master, text='Document id:', bg=self.background, fg=self.text_colour,
                            font='100 12 bold', width=13)
-
         database_file_lab = Label(self.master, text='Database file name:', bg=self.background, fg=self.text_colour,
                                   font='100 12 bold', width=20)
 
@@ -99,7 +99,8 @@ class MyInterface:
                                 font='100 12 bold', width=13)
         user_id_lab_also = Label(self.master, text='User id:', bg=self.background, fg=self.text_colour,
                                  font='100 12 bold', width=9)
-
+        sorting_lab_also = Label(self.master, text='Sorting type:', bg=self.background, fg=self.text_colour,
+                                 font='100 12 bold', width=9)
         database_file_lab_also = Label(self.master, text='Database file name:', bg=self.background, fg=self.text_colour,
                                        font='100 12 bold', width=20)
 
@@ -115,13 +116,23 @@ class MyInterface:
 
         # Dropdown
         view_choice = {'Country', 'Continent', 'Browser', 'All'}
-        self.Drop_Down.set('Country')  # set the default option
-        view_menu = OptionMenu(self.master, self.Drop_Down, *view_choice)
+        self.Drop_Down_views.set('Country')  # set the default option
+        view_menu = OptionMenu(self.master, self.Drop_Down_views, *view_choice)
         view_menu.config(bg=self.button_colour, activebackground=self.frame_background, fg=self.text_colour_buttons,
                          activeforeground=self.text_colour_buttons, width=10)
         view_menu['menu'].config(bg=self.entry_colour, fg=self.text_colour_buttons, borderwidth=0, activeborderwidth=0,
                                  activeforeground=self.text_colour_buttons, activebackground=self.frame_background)
         view_menu["highlightthickness"] = 0
+
+        sorting_choice = {'Most read', 'Least read'}
+        self.Drop_Down_sort.set('Most read')  # set the default option
+        sorting_menu = OptionMenu(self.master, self.Drop_Down_sort, *sorting_choice)
+        sorting_menu.config(bg=self.button_colour, activebackground=self.frame_background, fg=self.text_colour_buttons,
+                            activeforeground=self.text_colour_buttons, width=10)
+        sorting_menu['menu'].config(bg=self.entry_colour, fg=self.text_colour_buttons, borderwidth=0,
+                                    activeborderwidth=0, activeforeground=self.text_colour_buttons,
+                                    activebackground=self.frame_background)
+        sorting_menu["highlightthickness"] = 0
 
         # Buttons
         display = Button(self.master, text='Display', width=8, bg=self.button_colour,
@@ -134,12 +145,10 @@ class MyInterface:
                         activeforeground=self.text_colour_buttons, width=28)
         reader.bind('<Button-1>', self.reader_display)
 
-        graph_doc = Button(self.master, text='Display Document View', width=21, bg=self.button_colour,
-                           activebackground=self.frame_background, fg=self.text_colour_buttons,
-                           activeforeground=self.text_colour_buttons)
-        graph_user = Button(self.master, text='Display User View', width=21, bg=self.button_colour,
-                            activebackground=self.frame_background, fg=self.text_colour_buttons,
-                            activeforeground=self.text_colour_buttons)
+        graph = Button(self.master, text='Display Graph', width=21, bg=self.button_colour,
+                       activebackground=self.frame_background, fg=self.text_colour_buttons,
+                       activeforeground=self.text_colour_buttons)
+        graph.bind('<Button-1>', None)
 
         display.bind('<Button-1>', self.view_display)
 
@@ -168,11 +177,11 @@ class MyInterface:
 
         doc_id_lab_also.grid(row=3, column=7, sticky="news")
         document_id_also.grid(row=3, column=8, sticky="news", pady=10, padx=2)
-        graph_doc.grid(row=3, column=9, sticky="news", pady=10, padx=2)
-
-        user_id_lab_also.grid(row=3, column=10, sticky="news", pady=10, padx=2)
-        user_id_also.grid(row=3, column=11, sticky="news", pady=10, padx=2)
-        graph_user.grid(row=3, column=12, sticky="news", pady=10, padx=2)
+        user_id_lab_also.grid(row=3, column=9, sticky="news", pady=10, padx=2)
+        user_id_also.grid(row=3, column=10, sticky="news", pady=10, padx=2)
+        graph.grid(row=3, column=11, sticky="news", pady=10, padx=2)
+        graph.grid(row=3, column=11, sticky="news", pady=10, padx=2)
+        sorting_menu.grid(row=3, column=12, sticky="news", pady=10, padx=2)
 
         self.right_canvas.grid(row=4, column=6, columnspan=7, rowspan=2, sticky='news')
 
@@ -185,13 +194,13 @@ class MyInterface:
     #     frame.tkraise()
 
     def view_display(self, event):
-        if self.Drop_Down.get() == 'Country':
+        if self.Drop_Down_views.get() == 'Country':
             self.country_click()
-        if self.Drop_Down.get() == 'Continent':
+        if self.Drop_Down_views.get() == 'Continent':
             self.continent_click()
-        if self.Drop_Down.get() == 'Browser':
+        if self.Drop_Down_views.get() == 'Browser':
             self.browser_click()
-        if self.Drop_Down.get() == 'All':
+        if self.Drop_Down_views.get() == 'All':
             self.all_click()
 
     def reader_display(self, event):
