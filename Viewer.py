@@ -1,6 +1,8 @@
 import pandas as pd
 import pycountry_convert as cconv
 
+dataset = pd.read_json('issuu_cw2.json', lines=True)
+
 
 # Takes in string for document and optionally database and returns grouped-by pandas dataframe to plot viewers by
 # country and a dataframe for continents to use.
