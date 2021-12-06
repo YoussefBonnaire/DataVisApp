@@ -1,7 +1,9 @@
+import os
 from tkinter import *
 
 import matplotlib
 from pandastable import Table
+from tkPDFViewer import tkPDFViewer as pdf
 
 import Reader
 import alsoLikes
@@ -18,6 +20,11 @@ import Viewer
 # text_colour = '#aaa0c7'
 # entry_colour = '#394381'
 # button_colour = '#111b55'
+
+
+def clearFrame(graph_pdf):
+    # destroy all widgets from frame
+    graph_pdf.img_object_li = []
 
 
 class MyInterface:
@@ -41,12 +48,14 @@ class MyInterface:
         self.Drop_Down_views = StringVar()
         self.Drop_Down_sort = StringVar()
         self.left_canvas = Canvas(self.master)
-        self.right_canvas = Canvas(self.master)
+        self.right_frame = Frame(self.master)
         self.body()
 
         # Main
         master.title('The Data Analyser')
         master.configure(background=self.background)
+        if os.path.isfile('current_graph.pdf'):
+            os.remove("current_graph.pdf")
 
     def body(self):
         # Configure grid
@@ -162,7 +171,7 @@ class MyInterface:
         graph.grid(row=3, column=11, sticky="news", pady=10, padx=2)
         sorting_menu.grid(row=3, column=12, sticky="news", pady=10, padx=2)
 
-        self.right_canvas.grid(row=4, column=6, columnspan=7, rowspan=2, sticky='news')
+        self.right_frame.grid(row=4, column=6, columnspan=7, rowspan=2, sticky='news')
 
         separation.grid(row=1, column=5, rowspan=5, columnspan=2, sticky="news")
         bottom_bar.grid(row=6, column=0, columnspan=13, sticky="news")
@@ -179,7 +188,7 @@ class MyInterface:
             self.all_click()
 
     def reader_display(self, event):
-        top10 = Reader.top10()
+        top10 = Reader.top10('issuu_cw2.json')
         f = Frame(self.master)
         f.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
         self.left_canvas = pt = Table(f, dataframe=top10,
@@ -228,7 +237,7 @@ class MyInterface:
     def browser_click(self):
         doc = self.document.get()
         database = self.database.get()
-        browser_group = Viewer.Get_browser(doc, database)
+        browser_group = Viewer.Get_browser_clean(doc, database)
 
         fig = Figure()
         ax1 = fig.add_subplot(111)
@@ -248,7 +257,7 @@ class MyInterface:
         doc = self.document.get()
         country_groups, countries = Viewer.Get_countries(doc)
         continent_groups = Viewer.Get_continents(countries)
-        browser_group = Viewer.Get_browser(doc)
+        browser_group = Viewer.Get_browser_clean(doc)
 
         fig = Figure()
         ax1 = fig.add_subplot(131)
@@ -291,9 +300,12 @@ class MyInterface:
         database = self.database_also.get()
         user = self.user_also.get()
         graph = alsoLikes.buildGraph(documentIn=doc, userIn=user)
-        self.right_canvas = FigureCanvasTkAgg(graph, self.master)
-        self.right_canvas.draw()
-        self.right_canvas.get_tk_widget().grid(row=3, column=0, columnspan=5, sticky='news', ipadx=0, ipady=0)
+        graph_pdf = pdf.ShowPdf()
+        clearFrame(graph_pdf)
+        graph.render('current_graph')
+        self.frame = graph_pdf.pdf_view(self.right_frame, pdf_location=r"current_graph.pdf", bar=False, width=110,
+                                        height=33)
+        self.frame.grid(row=4, column=0, columnspan=5, sticky='news', ipadx=0, ipady=0)
 
     def closeGUI(self, event):
         self.master.destroy()

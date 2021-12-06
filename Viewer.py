@@ -27,6 +27,14 @@ def Get_continents(df):
 # browser
 def Get_browser(document, database='issuu_cw2.json'):
     df = views(document, database)
+    browsers = df.groupby(['visitor_useragent']).size()
+    if browsers.empty:
+        browsers = 'No views for this document'
+    return browsers
+
+
+def Get_browser_clean(document, database='issuu_cw2.json'):
+    df = views(document, database)
     df.visitor_useragent = df.visitor_useragent.str.split('/').str[0]
     browsers = df.groupby(['visitor_useragent']).size()
     if browsers.empty:
