@@ -1,9 +1,10 @@
 from collections import Counter
 
+import graphviz
 import numpy
 
 import Viewer as v
-import graphviz
+
 
 #  Returns the a list of visitor ids for the users
 #  that have visited the document
@@ -34,19 +35,21 @@ def sortDocuments(documents):
 #  and returns a list of the ten documents that have been
 #  read by the most users, sorted with the inputted sorting algorithm
 #  that have also read the input document
-def alsoLikes(document,userIn=None,sortF=sortDocuments):
+def alsoLikes(document, userIn=None, sortF=sortDocuments):
     users = findReaders(document)
-    if(userIn!=None):
-        numpy.append(users,userIn)
+    if userIn is not None:
+        numpy.append(users, userIn)
     documents = []
     for user in users:
         userDocs = userHasRead(user)
         documents.extend(userDocs)
     documents = sortF(documents)[:9]
     return documents
+
+
 #
-def buildGraph(documentIn,userIn=None,sortF=sortDocuments):
-    documents = alsoLikes(documentIn,userIn,sortF)
+def buildGraph(documentIn, userIn=None, sortF=sortDocuments):
+    documents = alsoLikes(documentIn, userIn, sortF)
     graph = graphviz.Digraph()
 
     graph.node('Documents', 'Documents', shape='plaintext', rank='Documents')
@@ -55,20 +58,20 @@ def buildGraph(documentIn,userIn=None,sortF=sortDocuments):
     addedUsers = findReaders(documentIn)
     for addedUser in addedUsers:
         userNodeLabel = addedUser[11:15]
-        if (addedUser == userIn):
+        if addedUser == userIn:
             graph.node(addedUser, userNodeLabel, style='filled', color='green', shape='box', rank='Readers')
         else:
             graph.node(addedUser, userNodeLabel, shape='box', rank='Readers')
 
     for document in documents:
         docNodeLabel = document[41:45]
-        if(document==documentIn):
+        if document == documentIn:
             graph.node(document, docNodeLabel, style='filled', color='green', shape='circle', rank='Readers')
         else:
             graph.node(document, docNodeLabel, shape='circle', rank='Readers')
-        users=findReaders(document)
+        users = findReaders(document)
         for user in users:
             if addedUsers.__contains__(user):
                 graph.edge(user, document)
-
+    graph.format = 'png'
     return graph
