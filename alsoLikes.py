@@ -50,10 +50,10 @@ def alsoLikes(document,user=None,sortF=None):
 #
 def buildGraph(documentIn,userIn=None,sortF=None):
     documents = alsoLikes(documentIn,userIn,sortF)
-    graph = graphviz.Graph()
+    graph = graphviz.Digraph()
     addedUsers =[]
-    graph.node('Readers', 'Readers', shape='plaintext', rank='Readers')
     graph.node('Documents', 'Documents', shape='plaintext', rank='Documents')
+    graph.node('Readers', 'Readers', shape='plaintext', rank='Readers')
     graph.edge('Readers', 'Documents')
     for document in documents:
         docNodeLabel = document[41:45]
@@ -66,9 +66,9 @@ def buildGraph(documentIn,userIn=None,sortF=None):
             userNodeLabel = user[11:15]
             if not addedUsers.__contains__(user):
                 if(user==userIn):
-                    graph.node(user, docNodeLabel, style='filled', color='green', shape='box', rank='Readers')
+                    graph.node(user, userNodeLabel, style='filled', color='green', shape='box', rank='Readers')
                 else:
-                    graph.node(user, docNodeLabel, shape='box', rank='Readers')
+                    graph.node(user, userNodeLabel, shape='box', rank='Readers')
             graph.edge(user, document)
 
     return graph
