@@ -42,16 +42,24 @@ def alsoLikes(document,userIn=None,sortF=sortDocuments):
     for user in users:
         userDocs = userHasRead(user)
         documents.extend(userDocs)
-    document= sortF(documents)[:9]
+    documents = sortF(documents)[:9]
     return documents
 #
 def buildGraph(documentIn,userIn=None,sortF=sortDocuments):
     documents = alsoLikes(documentIn,userIn,sortF)
     graph = graphviz.Digraph()
-    addedUsers =[]
+
     graph.node('Documents', 'Documents', shape='plaintext', rank='Documents')
     graph.node('Readers', 'Readers', shape='plaintext', rank='Readers')
     graph.edge('Readers', 'Documents')
+    addedUsers = findReaders(documentIn)
+    for addedUser in addedUsers:
+        userNodeLabel = addedUser[11:15]
+        if (addedUser == userIn):
+            graph.node(addedUser, userNodeLabel, style='filled', color='green', shape='box', rank='Readers')
+        else:
+            graph.node(addedUser, userNodeLabel, shape='box', rank='Readers')
+
     for document in documents:
         docNodeLabel = document[41:45]
         if(document==documentIn):
@@ -60,12 +68,7 @@ def buildGraph(documentIn,userIn=None,sortF=sortDocuments):
             graph.node(document, docNodeLabel, shape='circle', rank='Readers')
         users=findReaders(document)
         for user in users:
-            userNodeLabel = user[11:15]
-            if not addedUsers.__contains__(user):
-                if(user==userIn):
-                    graph.node(user, userNodeLabel, style='filled', color='green', shape='box', rank='Readers')
-                else:
-                    graph.node(user, userNodeLabel, shape='box', rank='Readers')
-            graph.edge(user, document)
+            if addedUsers.__contains__(user):
+                graph.edge(user, document)
 
     return graph
