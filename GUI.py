@@ -4,6 +4,7 @@ import matplotlib
 from pandastable import Table
 
 import Reader
+import alsoLikes
 
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
@@ -47,26 +48,6 @@ class MyInterface:
         master.title('The Data Analyser')
         master.configure(background=self.background)
 
-        # for multi-page use
-
-        # container = Frame(self)
-        # container.pack(side="top", fill="both", expand=True)
-        # container.grid_rowconfigure(0, weight=2)
-        # container.grid_rowconfigure(1, weight=1)
-        # container.grid_rowconfigure(2, weight=1)
-        # container.grid_rowconfigure(3, weight=10)
-        # container.grid_rowconfigure(4, weight=2)
-        # container.grid_columnconfigure(tuple(range(60)), weight=1)
-
-        # for F in (StartPage, Document_viewer, Avid_reader, Also_likes):
-        #     frame = F(container, self)
-        #
-        #     self.frames[F] = frame
-        #
-        #     frame.grid(row=0, column=0, sticky="nsew")
-        #
-        # self.show_frame(StartPage)
-
     def body(self):
         # Configure grid
         self.master.rowconfigure(0, weight=3)
@@ -98,8 +79,6 @@ class MyInterface:
         doc_id_lab_also = Label(self.master, text='Document id:', bg=self.background, fg=self.text_colour,
                                 font='100 12 bold', width=13)
         user_id_lab_also = Label(self.master, text='User id:', bg=self.background, fg=self.text_colour,
-                                 font='100 12 bold', width=9)
-        sorting_lab_also = Label(self.master, text='Sorting type:', bg=self.background, fg=self.text_colour,
                                  font='100 12 bold', width=9)
         database_file_lab_also = Label(self.master, text='Database file:', bg=self.background, fg=self.text_colour,
                                        font='100 12 bold', width=15)
@@ -148,7 +127,7 @@ class MyInterface:
         graph = Button(self.master, text='Display Graph', width=21, bg=self.button_colour,
                        activebackground=self.frame_background, fg=self.text_colour_buttons,
                        activeforeground=self.text_colour_buttons)
-        graph.bind('<Button-1>', None)
+        graph.bind('<Button-1>', self.sort_choice)
 
         display.bind('<Button-1>', self.view_display)
 
@@ -188,10 +167,6 @@ class MyInterface:
         separation.grid(row=1, column=5, rowspan=5, columnspan=2, sticky="news")
         bottom_bar.grid(row=6, column=0, columnspan=13, sticky="news")
         exit_button.grid(row=0, column=12, sticky="ne")
-
-    # def show_frame(self, cont):
-    #     frame = self.frames[cont]
-    #     frame.tkraise()
 
     def view_display(self, event):
         if self.Drop_Down_views.get() == 'Country':
@@ -307,30 +282,21 @@ class MyInterface:
         toolbar.update()
         toolbar.grid(row=4, column=0, columnspan=5, sticky='news')
 
+    def sort_choice(self, event):
+        if self.Drop_Down_sort.get() == 'Most read':
+            self.graph_alsoLikes()
+
+    def graph_alsoLikes(self, sort=None):
+        doc = self.document_also.get()
+        database = self.database_also.get()
+        user = self.user_also.get()
+        graph = alsoLikes.buildGraph(documentIn=doc, userIn=user)
+        self.right_canvas = FigureCanvasTkAgg(graph, self.master)
+        self.right_canvas.draw()
+        self.right_canvas.get_tk_widget().grid(row=3, column=0, columnspan=5, sticky='news', ipadx=0, ipady=0)
+
     def closeGUI(self, event):
         self.master.destroy()
-
-
-# class StartPage(Frame):
-#
-#     def __init__(self, parent, controller):
-#         Frame.__init__(self, parent)
-#         title_lab = Label(self, text="Welcome to the Data Analyser", font=LARGE_FONT)
-#         title_lab.grid(row=0, column=0, columnspan=101, sticky="news")
-#
-#         doc_button = Button(self, text="Click for document views",
-#                             command=lambda: controller.show_frame(Document_viewer))
-#         doc_button.grid(row=1, column=0, sticky='news')
-#
-#         reader_button = Button(self, text="Click for Avid reader list",
-#                                command=lambda: controller.show_frame(Avid_reader))
-#         reader_button.grid(row=1, column=1, sticky='news')
-#
-#         alsolikes_button = Button(self, text="Click for also likes functionality",
-#                                   command=lambda: controller.show_frame(Also_likes))
-#         alsolikes_button.grid(row=1, column=2, sticky='news')
-#
-#         bottom_bar = Label(self.master, anchor='center', bg=self.frame_background)
 
 
 root = Tk()

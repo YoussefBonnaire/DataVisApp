@@ -46,7 +46,7 @@ def alsoLikes(document, user=None, sortF=None):
     if sortF is None:
         documents = sortDocuments(documents)[:9]
     else:
-        document = sortF(documents)[:9]
+        documents = sortF(documents)[:9]
     return documents
 
 
