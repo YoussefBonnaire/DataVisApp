@@ -1,6 +1,6 @@
 import Viewer
 import alsoLikes
-
+import graphviz
 
 def main():
     """ Testing different methods """
@@ -19,9 +19,10 @@ def main():
     print('Document 1 has been read by')
     users = alsoLikes.findReaders(documents[0])
     print(users)
-    alsoDocs = alsoLikes.alsoLikes(documents[0],None,None)
+    alsoDocs = alsoLikes.alsoLikes(documents[0])
     print('Users who like document 1 also like')
     print(alsoDocs)
+    graph = alsoLikes.buildGraph(documents[0])
     # top10 = Reader.top10()
     # print(top10)
     return 0

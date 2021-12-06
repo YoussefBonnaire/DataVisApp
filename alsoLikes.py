@@ -1,18 +1,20 @@
 from collections import Counter
 
+import numpy
+
 import Viewer as v
+import graphviz
 
-
-# Returns the a list of visitor ids for the users
-# that have visited the document
+#  Returns the a list of visitor ids for the users
+#  that have visited the document
 def findReaders(document):
     df = v.views(document)
     users = df['visitor_uuid']
     return users.values
 
 
-# Takes a visitorid and returns a list of documents
-# they have visited as a list of ids
+#  Takes a visitorid and returns a list of documents
+#  they have visited as a list of ids
 def userHasRead(user):
     df = v.dataset.copy()
     df = df[df.visitor_uuid == user]
@@ -21,29 +23,52 @@ def userHasRead(user):
     return documents.values
 
 
-# takes a list of document ids and sorts them
+#  Takes a list of document ids and sorts them
 def sortDocuments(documents):
     documents.sort(key=Counter(documents).get, reverse=True)
     documents = list(dict.fromkeys(documents))
-    # The function didn't return anything so alsolikes wouldn't have sorted the documents (added it there)
     return documents
 
 
-# Takes a document and returns a list of the
-# ten documents that have been read by the most users
-# that have also read the input document
-def alsoLikes(document,user,sortF):
+#  Takes a document and optionally a user and a sorting function
+#  and returns a list of the ten documents that have been
+#  read by the most users, sorted with the inputted sorting algorithm
+#  that have also read the input document
+def alsoLikes(document,user=None,sortF=None):
     users = findReaders(document)
-    if(user==None):
-        users.append(user)
+    if(user!=None):
+        numpy.append(users,user)
     documents = []
     for user in users:
-        # Not entirely sure views works on multiple documents but have not tested it on that at all so very well could
         userDocs = userHasRead(user)
         documents.extend(userDocs)
-    # This may not work if sortDocuments is made for pandas df, you can test it the way I did in the main if you want
     if(sortF==None):
         documents = sortDocuments(documents)[:9]
     else:
         document= sortF(documents)[:9]
     return documents
+#
+def buildGraph(documentIn,userIn=None,sortF=None):
+    documents = alsoLikes(documentIn,userIn,sortF)
+    graph = graphviz.Graph
+    addedUsers =[]
+    graph.node('Readers', 'Readers', shape='plaintext', rank='Readers')
+    graph.node('Documents', 'Documents', shape='plaintext', rank='Documents')
+    graph.edge('Readers', 'Documents')
+    for document in documents:
+        docNodeLabel = document[41:45]
+        if(document==documentIn):
+            graph.node(document, docNodeLabel, color='green', shape='circle', rank='Readers')
+        else:
+            graph.node(document, docNodeLabel, shape='circle', rank='Readers')
+        users=findReaders(document)
+        for user in users:
+            userNodeLabel = user[11:15]
+            if not addedUsers.__contains__(user):
+                if(user==userIn):
+                    graph.node(user, docNodeLabel, color='green', shape='box', rank='Readers')
+                else:
+                    graph.node(user, docNodeLabel, shape='box', rank='Readers')
+            graph.edge(user, document)
+
+    return graph
