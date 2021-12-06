@@ -37,7 +37,7 @@ def sortDocuments(documents):
 #  that have also read the input document
 def alsoLikes(document, userIn=None, sortF=sortDocuments):
     users = findReaders(document)
-    if (userIn != None):
+    if userIn is not None:
         numpy.append(users, userIn)
     documents = []
     for user in users:
@@ -57,7 +57,7 @@ def buildGraph(documentIn, userIn=None, sortF=sortDocuments):
     graph.edge('Readers', 'Documents')
     for document in documents:
         docNodeLabel = document[41:45]
-        if (document == documentIn):
+        if document == documentIn:
             graph.node(document, docNodeLabel, style='filled', color='green', shape='circle', rank='Readers')
         else:
             graph.node(document, docNodeLabel, shape='circle', rank='Readers')
@@ -65,7 +65,7 @@ def buildGraph(documentIn, userIn=None, sortF=sortDocuments):
         for user in users:
             userNodeLabel = user[11:15]
             if not addedUsers.__contains__(user):
-                if (user == userIn):
+                if user == userIn:
                     graph.node(user, userNodeLabel, style='filled', color='green', shape='box', rank='Readers')
                 else:
                     graph.node(user, userNodeLabel, shape='box', rank='Readers')
