@@ -1,33 +1,19 @@
-import os
 from tkinter import *
 
 import matplotlib
-from pandastable import Table
-from tkPDFViewer import tkPDFViewer as pdf
-
-import Reader
-import alsoLikes
 
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
+from PIL import Image, ImageTk
+from pandastable import Table
+
 import Viewer
+import Reader
+import alsoLikes
 
 
-# LARGE_FONT = ("Verdana", 24)
-# background = '#000731'
-# frame_background = '#010523'
-# text_colour = '#aaa0c7'
-# entry_colour = '#394381'
-# button_colour = '#111b55'
-
-
-def clearFrame(graph_pdf):
-    # destroy all widgets from frame
-    graph_pdf.img_object_li = []
-
-
-class MyInterface:
+class MyGUIInterface:
     LABEL_TEXT = ['This is the Interface package.',
                   'This is the class for GUI,']
 
@@ -55,8 +41,6 @@ class MyInterface:
         # Main
         master.title('The Data Analyser')
         master.configure(background=self.background)
-        if os.path.isfile('current_graph.pdf'):
-            os.remove("current_graph.pdf")
 
     def body(self):
         # Configure grid
@@ -287,10 +271,10 @@ class MyInterface:
     def draw_canvas(self, fig, plot):
         self.left_canvas = FigureCanvasTkAgg(fig, plot)
         self.left_canvas.draw()
-        self.left_canvas.get_tk_widget().grid(row=3, column=0, columnspan=5, sticky='news', ipadx=0, ipady=0)
+        self.left_canvas.get_tk_widget().grid(row=4, column=0, columnspan=5, sticky='news', ipadx=0, ipady=0)
         toolbar = NavigationToolbar2Tk(self.left_canvas, self.master, pack_toolbar=False)
         toolbar.update()
-        toolbar.grid(row=4, column=0, columnspan=5, sticky='news')
+        toolbar.grid(row=5, column=0, columnspan=5, sticky='news')
 
     def sort_choice(self, event):
         if self.Drop_Down_sort.get() == 'Most read':
@@ -301,18 +285,17 @@ class MyInterface:
         database = self.database_also.get()
         user = self.user_also.get()
         graph = alsoLikes.buildGraph(documentIn=doc, userIn=user)
-        graph_pdf = pdf.ShowPdf()
-        # clearFrame(graph_pdf)
         graph.render('current_graph')
-        self.frame = graph_pdf.pdf_view(self.right_frame, pdf_location=r"current_graph.pdf", bar=False, width=110,
-                                        height=33)
-        self.frame.grid(row=4, column=0, columnspan=5, sticky='news', ipadx=0, ipady=0)
-        self.counter += 1
+        graph_im = Image.open("./current_graph.png")
+        graph = ImageTk.PhotoImage(graph_im)
+        graph_label = Label(self.master, image=graph)
+        graph_label.image = graph
+        graph_label.grid(row=4, column=7, columnspan=7, rowspan=2, sticky='news')
 
     def closeGUI(self, event):
         self.master.destroy()
 
 
 root = Tk()
-obj = MyInterface(root)
+obj = MyGUIInterface(root)
 root.mainloop()

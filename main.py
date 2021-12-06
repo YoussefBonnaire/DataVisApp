@@ -13,7 +13,7 @@ def main():
     browsers = Viewer.Get_browser_clean(document)
     print(browsers)
 
-    documents = alsoLikes.userHasRead(user)
+    documents = alsoLikes.userHasRead('2f63e0cca690da91')
     print('The user has read')
     print(documents)
     print('Document 1 has been read by')
@@ -23,7 +23,7 @@ def main():
     print('Users who like document 1 also like')
     print(alsoDocs)
     graph = alsoLikes.buildGraph(documents[0])
-    graph.render('test', view=True)
+    # graph.render('test', view=True)
     # top10 = Reader.top10()
     # print(top10)
     return 0
