@@ -1,13 +1,11 @@
 ## Example 1
 import argparse
-from tkinter import Tk
 
 import matplotlib.pyplot as plt
 
 import Reader
 import Viewer
 import alsoLikes
-from GUI import MyGUIInterface
 
 parser = argparse.ArgumentParser(prog='cw2', description='Perform tasks for F21SC cw2.',
                                  usage='%(prog)s -u user_uuid -d doc_uuid -t task_id -f file_name')
@@ -99,11 +97,11 @@ elif args.t == '6':
     graph = alsoLikes.buildGraph(args.d, args.u, database=args.f)
     graph.render()
 
-elif args.t == '7':
-    root = Tk()
-    gui = MyGUIInterface(root)
-    gui.document_also = args.d
-    gui.user_also = args.u
-    gui.database_also = args.f
-    gui.graph_alsoLikes()
-    root.mainloop()
+# elif args.t == '7':
+#     root = Tk()
+#     gui = MyGUIInterface(root)
+#     gui.document_also = args.d
+#     gui.user_also = args.u
+#     gui.database_also = args.f
+#     gui.graph_alsoLikes()
+#     root.mainloop()

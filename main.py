@@ -1,10 +1,10 @@
 import Viewer
 import alsoLikes
-import graphviz
+
 
 def main():
     """ Testing different methods """
-    document = '140228202800-6ef39a241f35301a9a42cd0ed21e5fb0'
+    document = '140204115519-f5fa6ce8b288c9f10e0c8bc7e1a456a0'
     user = '2f63e0cca690da91'
     country_group, df = Viewer.Get_countries(document)
     print(country_group)
@@ -23,7 +23,7 @@ def main():
     print('Users who like document 1 also like')
     print(alsoDocs)
     graph = alsoLikes.buildGraph(documents[0])
-    graph.render('test',view=True)
+    graph.render('test', view=True)
     # top10 = Reader.top10()
     # print(top10)
     return 0

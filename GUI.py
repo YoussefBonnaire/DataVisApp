@@ -1,16 +1,16 @@
 from tkinter import *
 
 import matplotlib
+from PIL import Image, ImageTk
+from pandastable import Table
+
+import Reader
+import Viewer
+import alsoLikes
 
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 from matplotlib.figure import Figure
-from PIL import Image, ImageTk
-from pandastable import Table
-
-import Viewer
-import Reader
-import alsoLikes
 
 
 class MyGUIInterface:
