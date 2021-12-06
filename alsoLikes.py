@@ -2,7 +2,7 @@ from collections import Counter
 
 import graphviz
 import numpy
-
+import pandas as pd
 import Viewer as v
 
 
@@ -16,8 +16,8 @@ def findReaders(document):
 
 #  Takes a visitorid and returns a list of documents
 #  they have visited as a list of ids
-def userHasRead(user):
-    df = v.dataset.copy()
+def userHasRead(user, database='issuu_cw2.json'):
+    df = pd.read_json(database, lines=True)
     df = df[df.visitor_uuid == user]
     df = df[df.event_type == 'read']
     documents = df['env_doc_id']
