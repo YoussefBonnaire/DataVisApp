@@ -43,7 +43,7 @@ def alsoLikes(document, userIn=None, sortF=sortDocuments):
     for user in users:
         userDocs = userHasRead(user)
         documents.extend(userDocs)
-    document = sortF(documents)[:9]
+    documents = sortF(documents)[:9]
     return documents
 
 
