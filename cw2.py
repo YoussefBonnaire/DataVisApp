@@ -1,75 +1,101 @@
 ## Example 1
 import argparse
 
-parser = argparse.ArgumentParser(description='Add some integers.')
-parser.add_argument('integers', metavar='N', type=int, nargs='+',
-                    help='interger list')
-parser.add_argument('--sum', action='store_const',
-                    const=sum, default=max,
-                    help='sum the integers (default: find the max)')
+import matplotlib.pyplot as plt
+
+import Reader
+import Viewer
+import alsoLikes
+
+parser = argparse.ArgumentParser(prog='cw2', description='Perform tasks for F21SC cw2.',
+                                 usage='%(prog)s -u user_uuid -d doc_uuid -t task_id -f file_name')
+parser.add_argument('-u',
+                    metavar='user_uuid',
+                    type=str,
+                    default=None,
+                    action='store',
+                    help='the user_uuid required.')
+
+parser.add_argument('-d',
+                    metavar='doc_uuid',
+                    type=str,
+                    action='store',
+                    help='the doc_uuid required.')
+
+parser.add_argument('-t',
+                    metavar='task_id',
+                    type=str,
+                    action='store',
+                    help='the task_id required.')
+
+parser.add_argument('-f',
+                    metavar='file_name',
+                    type=str,
+                    action='store',
+                    help='the file_name required.')
+
 args = parser.parse_args()
-print(args.sum(args.integers))
 
-## Example 1.5
-# importing required modules
+if args.t == '2a':
+    countries, _ = Viewer.Get_countries(args.d, args.f)
+    ax1 = plt.gca()
+    if type(countries) is not str:
+        countries.plot(kind='bar', ax=ax1)
+        ax1.set_ylabel('Number of viewers')
+        ax1.set_xlabel('Countries')
+        ax1.set_title('Views by country')
+        plt.show()
+    else:
+        print(countries)
 
-# create a parser object
-parser = argparse.ArgumentParser(description="An addition program")
+elif args.t == '2b':
+    _, countries = Viewer.Get_countries(args.d, args.f)
+    continents = Viewer.Get_continents(countries)
+    ax1 = plt.gca()
+    if type(continents) is not str:
+        continents.plot(kind='bar', ax=ax1)
+        ax1.set_ylabel('Number of viewers')
+        ax1.set_xlabel('Continents')
+        ax1.set_title('Views by Continents')
+        plt.show()
+    else:
+        print(continents)
 
-# add argument
-parser.add_argument("add", nargs='*', metavar="num", type=int,
-                    help="All the numbers separated by spaces will be added.")
+elif args.t == '3a':
+    browsers = Viewer.Get_browser(args.d, args.f)
+    ax1 = plt.gca()
+    if type(browsers) is not str:
+        browsers.plot(kind='bar', ax=ax1)
+        ax1.set_ylabel('Number of viewers')
+        ax1.set_xlabel('Browsers')
+        ax1.set_title('Views by Browsers')
+        plt.show()
+    else:
+        print(browsers)
 
-# parse the arguments from standard input
-args = parser.parse_args()
+elif args.t == '3b':
+    browsers = Viewer.Get_browser_clean(args.d, args.f)
+    ax1 = plt.gca()
+    if type(browsers) is not str:
+        browsers.plot(kind='bar', ax=ax1)
+        ax1.set_ylabel('Number of viewers')
+        ax1.set_xlabel('Browsers')
+        ax1.set_title('Views by Browsers')
+        plt.show()
+    else:
+        print(browsers)
 
-# check if add argument has any input data.
-# If it has, then print sum of the given numbers
-if len(args.add) != 0:
-    print(sum(args.add))
+elif args.t == '4':
+    top10 = Reader.top10(args.f)
+    print(top10)
 
-## Example 2
-import click
-import requests
+elif args.t == '5d':
+    likes = alsoLikes.alsoLikes(args.d, args.u, database=args.f)
+    print(likes)
 
-__author__ = "Oyetoke Toby"
+elif args.t == '6':
+    graph = alsoLikes.buildGraph(args.d, args.u, database=args.f)
+    graph.render()
 
+elif args.t == '7':
 
-@click.group()
-def main():
-    """
-    Simple CLI for querying books on Google Books by Oyetoke Toby
-    """
-    pass
-
-
-@main.command()
-@click.argument('query')
-def search(query):
-    """This search and return results corresponding to the given query from Google Books"""
-    url_format = 'https://www.googleapis.com/books/v1/volumes'
-    query = "+".join(query.split())
-
-    query_params = {
-        'q': query
-    }
-
-    response = requests.get(url_format, params=query_params)
-
-    click.echo(response.json()['items'])
-
-
-@main.command()
-@click.argument('id')
-def get(id):
-    """This return a particular book from the given id on Google Books"""
-    url_format = 'https://www.googleapis.com/books/v1/volumes/{}'
-    click.echo(id)
-
-    response = requests.get(url_format.format(id))
-
-    click.echo(response.json())
-
-
-if __name__ == "__main__":
-    main()
