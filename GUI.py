@@ -49,6 +49,7 @@ class MyInterface:
         self.Drop_Down_sort = StringVar()
         self.left_canvas = Canvas(self.master)
         self.right_frame = Frame(self.master)
+        self.counter = 0
         self.body()
 
         # Main
@@ -301,11 +302,12 @@ class MyInterface:
         user = self.user_also.get()
         graph = alsoLikes.buildGraph(documentIn=doc, userIn=user)
         graph_pdf = pdf.ShowPdf()
-        clearFrame(graph_pdf)
+        # clearFrame(graph_pdf)
         graph.render('current_graph')
         self.frame = graph_pdf.pdf_view(self.right_frame, pdf_location=r"current_graph.pdf", bar=False, width=110,
                                         height=33)
         self.frame.grid(row=4, column=0, columnspan=5, sticky='news', ipadx=0, ipady=0)
+        self.counter += 1
 
     def closeGUI(self, event):
         self.master.destroy()
