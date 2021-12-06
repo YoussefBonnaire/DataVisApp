@@ -34,21 +34,18 @@ def sortDocuments(documents):
 #  and returns a list of the ten documents that have been
 #  read by the most users, sorted with the inputted sorting algorithm
 #  that have also read the input document
-def alsoLikes(document,user=None,sortF=None):
+def alsoLikes(document,userIn=None,sortF=sortDocuments):
     users = findReaders(document)
-    if(user!=None):
-        numpy.append(users,user)
+    if(userIn!=None):
+        numpy.append(users,userIn)
     documents = []
     for user in users:
         userDocs = userHasRead(user)
         documents.extend(userDocs)
-    if(sortF==None):
-        documents = sortDocuments(documents)[:9]
-    else:
-        document= sortF(documents)[:9]
+    document= sortF(documents)[:9]
     return documents
 #
-def buildGraph(documentIn,userIn=None,sortF=None):
+def buildGraph(documentIn,userIn=None,sortF=sortDocuments):
     documents = alsoLikes(documentIn,userIn,sortF)
     graph = graphviz.Digraph()
     addedUsers =[]
