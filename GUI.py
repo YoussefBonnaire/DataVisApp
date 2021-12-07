@@ -20,11 +20,11 @@ class MyGUIInterface:
     def __init__(self, master):
         # Declaration of Variables
         self.master = master
-        self.document = StringVar()
-        self.database = StringVar(master, value='issuu_cw2.json')
-        self.document_also = StringVar()
-        self.user_also = StringVar()
-        self.database_also = StringVar(master, value='issuu_cw2.json')
+        self.document = StringVar(name='documentId')
+        self.database = StringVar(master, value='issuu_cw2.json', name='database')
+        self.document_also = StringVar(name='documentId_also')
+        self.user_also = StringVar(name='userId_also')
+        self.database_also = StringVar(master, value='issuu_cw2.json', name='database_also')
         self.background = self.text_colour_buttons = '#ffffff'
         self.frame_background = '#010523'
         self.text_colour = '#000000'
@@ -294,20 +294,25 @@ class MyGUIInterface:
 
     def graph_alsoLikes(self, event):
         """Displays Also likes graph on right canvas when right display button is clicked"""
-        doc = self.document_also.get()
-        database = self.database_also.get()
-        user = self.user_also.get()
-        if self.Drop_Down_sort.get() == 'Most read':
-            sortF = alsoLikes.sortDocumentsDesc
-        elif self.Drop_Down_sort.get() == 'Least read':
-            sortF = alsoLikes.sortDocumentsAsc
-        graph = alsoLikes.buildGraph(documentIn=doc, userIn=user, sortF=sortF, database=database)
-        graph.render('current_graph')
-        graph_im = Image.open("./current_graph.png")
-        graph = ImageTk.PhotoImage(graph_im)
-        graph_label = Label(self.master, image=graph)
-        graph_label.image = graph
-        graph_label.grid(row=4, column=7, columnspan=7, rowspan=2, sticky='news')
+        try:
+            doc = self.document_also.get()
+            database = self.database_also.get()
+            user = self.user_also.get()
+            if self.Drop_Down_sort.get() == 'Most read':
+                sortF = alsoLikes.sortDocumentsDesc
+            elif self.Drop_Down_sort.get() == 'Least read':
+                sortF = alsoLikes.sortDocumentsAsc
+            graph = alsoLikes.buildGraph(documentIn=doc, userIn=user, sortF=sortF, database=database)
+            graph.render('current_graph')
+            graph_im = Image.open("./current_graph.png")
+            graph = ImageTk.PhotoImage(graph_im)
+            graph_label = Label(self.master, image=graph)
+            graph_label.image = graph
+            graph_label.grid(row=4, column=7, columnspan=7, rowspan=2, sticky='news')
+        except:
+            no_views = Label(self.master, text='Invalid User Id or database', anchor='center', font=100,
+                             width=24, bg=self.background, fg=self.text_colour)
+            no_views.grid(row=4, column=7, columnspan=7, rowspan=2, sticky='news')
 
     def closeGUI(self, event):
         """Closes GUI when exit in top right is clicked"""

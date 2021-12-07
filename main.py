@@ -20,7 +20,7 @@ def main():
     users = alsoLikes.findReaders(documents[0])
     print(users)
     print('Users who like document 1 also like')
-    alsoDocs = alsoLikes.alsoLikes(documents[0],None,alsoLikes.sortDocumentsAsc)
+    alsoDocs = alsoLikes.alsoLikes(documents[0], None, alsoLikes.sortDocumentsAsc)
     print(alsoDocs)
     alsoDocs = alsoLikes.alsoLikes(documents[0], None, alsoLikes.sortDocumentsDesc)
     print(alsoDocs)
