@@ -19,11 +19,12 @@ def main():
     print('Document 1 has been read by')
     users = alsoLikes.findReaders(documents[0])
     print(users)
-    alsoDocs = alsoLikes.alsoLikes(documents[0])
     print('Users who like document 1 also like')
+    alsoDocs = alsoLikes.alsoLikes(documents[0],None,alsoLikes.sortDocumentsAsc)
     print(alsoDocs)
-    graph = alsoLikes.buildGraph(documents[0])
-    graph.render('test', view=True)
+    alsoDocs = alsoLikes.alsoLikes(documents[0], None, alsoLikes.sortDocumentsDesc)
+    print(alsoDocs)
+
     # top10 = Reader.top10()
     # print(top10)
     return 0
