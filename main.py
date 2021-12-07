@@ -1,3 +1,4 @@
+import Reader
 import Viewer
 import alsoLikes
 
@@ -24,9 +25,9 @@ def main():
     print(alsoDocs)
     graph = alsoLikes.buildGraph(documents[0])
     graph.render('test', view=True)
-    # top10 = Reader.top10()
-    # print(top10)
-    return 0
+    top10 = Reader.top10()
+    print(top10)
+    return None
 
 
 if __name__ == "__main__":

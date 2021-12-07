@@ -3,8 +3,6 @@
 # readers, based on this analysis, should be printed.
 import pandas as pd
 
-dataset = pd.read_json('issuu_cw2.json', lines=True)
-
 
 def top10(database='issuu_cw2.json'):
     df = pd.read_json(database, lines=True)

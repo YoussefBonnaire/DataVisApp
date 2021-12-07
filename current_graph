@@ -2,7 +2,7 @@ digraph {
 	Documents [label=Documents rank=Documents shape=plaintext]
 	Readers [label=Readers rank=Readers shape=plaintext]
 	Readers -> Documents
-	"2f63e0cca690da91" [label="0da9" rank=Readers shape=box]
+	"2f63e0cca690da91" [label="0da9" color=green rank=Readers shape=box style=filled]
 	"88c39a2a81272740" [label=7274 rank=Readers shape=box]
 	"140204115519-f5fa6ce8b288c9f10e0c8bc7e1a456a0" [label="56a0" color=green rank=Readers shape=circle style=filled]
 	"2f63e0cca690da91" -> "140204115519-f5fa6ce8b288c9f10e0c8bc7e1a456a0"

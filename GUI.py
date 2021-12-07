@@ -89,7 +89,7 @@ class MyGUIInterface:
 
         # Dropdown
         view_choice = {'Country', 'Continent', 'Browser', 'All'}
-        self.Drop_Down_views.set('Country')  # set the default option
+        self.Drop_Down_views.set('All')  # set the default option
         view_menu = OptionMenu(self.master, self.Drop_Down_views, *view_choice)
         view_menu.config(bg=self.button_colour, activebackground=self.frame_background, fg=self.text_colour_buttons,
                          activeforeground=self.text_colour_buttons, width=10)
@@ -125,7 +125,7 @@ class MyGUIInterface:
 
         display.bind('<Button-1>', self.view_display)
 
-        exit_button = Button(self.master, text='Exit')
+        exit_button = Button(self.master, text='Exit', font='100 14 bold', width=10, height=1)
         exit_button.bind('<Button-1>', self.closeGUI)
 
         # Positioning
@@ -173,12 +173,17 @@ class MyGUIInterface:
             self.all_click()
 
     def reader_display(self, event):
-        top10 = Reader.top10('issuu_cw2.json')
-        f = Frame(self.master)
-        f.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
-        self.left_canvas = pt = Table(f, dataframe=top10,
-                                      showtoolbar=True, showstatusbar=True)
-        pt.show()
+        top10 = Reader.top10(self.database.get())
+        if not top10.empty:
+            f = Frame(self.master)
+            f.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
+            self.left_canvas = pt = Table(f, dataframe=top10,
+                                          showtoolbar=True, showstatusbar=True)
+            pt.show()
+        else:
+            no_views = Label(self.master, text='Database empty', anchor='center', font=100,
+                             width=24, bg=self.background, fg=self.text_colour)
+            no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def country_click(self):
         doc = self.document.get()
@@ -281,9 +286,19 @@ class MyGUIInterface:
             self.graph_alsoLikes()
 
     def graph_alsoLikes(self, sort=None):
-        doc = self.document_also.get()
-        database = self.database_also.get()
-        user = self.user_also.get()
+        if type(self.document_also) is not str:
+            doc = self.document_also.get()
+        else:
+            doc = self.document_also
+        if type(self.database_also) is not str:
+            database = self.database_also.get()
+        else:
+            database = self.database_also
+        if type(self.user_also) is not str:
+            user = self.user_also.get()
+        else:
+            user = self.user_also
+
         graph = alsoLikes.buildGraph(documentIn=doc, userIn=user)
         graph.render('current_graph')
         graph_im = Image.open("./current_graph.png")
@@ -296,6 +311,11 @@ class MyGUIInterface:
         self.master.destroy()
 
 
-root = Tk()
-obj = MyGUIInterface(root)
-root.mainloop()
+def main():
+    root = Tk()
+    obj = MyGUIInterface(root)
+    root.mainloop()
+
+
+if __name__ == "__main__":
+    main()
