@@ -6,9 +6,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 from pandastable import Table
 
+import AlsoLikes
 import Reader
 import Viewer
-import AlsoLikes
 
 matplotlib.use("TkAgg")
 
@@ -320,11 +320,7 @@ class MyGUIInterface:
         self.master.destroy()
 
 
-def main():
+if __name__ == "__main__":
     root = Tk()
     obj = MyGUIInterface(root)
     root.mainloop()
-
-
-if __name__ == "__main__":
-    main()
