@@ -310,8 +310,9 @@ class MyGUIInterface:
             graph_label.image = graph
             graph_label.grid(row=4, column=7, columnspan=7, rowspan=2, sticky='news')
         except:
-            no_views = Label(self.master, text='Invalid User Id or database', anchor='center', font=100,
-                             width=24, bg=self.background, fg=self.text_colour)
+            no_views = Label(self.master,
+                             text='Invalid User Id, Document Id or Database. Please make sure inputs are correct',
+                             anchor='center', font=100, width=24, bg=self.background, fg=self.text_colour)
             no_views.grid(row=4, column=7, columnspan=7, rowspan=2, sticky='news')
 
     def closeGUI(self, event):
