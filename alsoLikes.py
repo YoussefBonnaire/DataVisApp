@@ -24,18 +24,41 @@ def userHasRead(user, database='issuu_cw2.json'):
     return documents.values
 
 
-#  Takes a list of document ids and sorts them
-def sortDocuments(documents):
+#  Takes a list of document ids and sorts them in descending order order
+def sortDocumentsDesc(documents):
     documents.sort(key=Counter(documents).get, reverse=True)
     documents = list(dict.fromkeys(documents))
     return documents
+
+#  Takes a list of document ids and sorts them in descending order order
+def sortDocumentsAsc(documents):
+    documents.sort(key=Counter(documents).get)
+    documents = list(dict.fromkeys(documents))
+    return documents
+
+#  Find most read
+def findTop(documentIn,userIn):
+    sorty=[]
+    users = findReaders(documentIn)
+    if userIn is not None:
+        numpy.append(users, userIn)
+    sorty = []
+    for user in users:
+        userDocs = userHasRead(user)
+        print(user)
+        print(userDocs)
+        sorty.extend(userDocs)
+    sorty.sort(key=Counter(sorty).get, reverse=True)
+    sorty = list(dict.fromkeys(sorty))
+    sorty.remove(documentIn)
+    return sorty[0]
 
 
 #  Takes a document and optionally a user and a sorting function
 #  and returns a list of the ten documents that have been
 #  read by the most users, sorted with the inputted sorting algorithm
 #  that have also read the input document
-def alsoLikes(document, userIn=None, sortF=sortDocuments):
+def alsoLikes(document, userIn=None, sortF=sortDocumentsDesc):
     users = findReaders(document)
     if userIn is not None:
         numpy.append(users, userIn)
@@ -47,10 +70,12 @@ def alsoLikes(document, userIn=None, sortF=sortDocuments):
     return documents
 
 
-#
-def buildGraph(documentIn, userIn=None, sortF=sortDocuments):
+#  Takes a document and optionally a user and a sorting function
+#  and returns a graph based on the documents returned by the alsoLikes
+def buildGraph(documentIn, userIn=None, sortF=sortDocumentsDesc):
     documents = alsoLikes(documentIn, userIn, sortF)
     graph = graphviz.Digraph()
+    topDocument = findTop(documentIn, userIn)
 
     graph.node('Documents', 'Documents', shape='plaintext', rank='Documents')
     graph.node('Readers', 'Readers', shape='plaintext', rank='Readers')
@@ -67,6 +92,8 @@ def buildGraph(documentIn, userIn=None, sortF=sortDocuments):
         docNodeLabel = document[41:45]
         if document == documentIn:
             graph.node(document, docNodeLabel, style='filled', color='green', shape='circle', rank='Readers')
+        elif document == topDocument:
+            graph.node(document, docNodeLabel, style='filled', color='red', shape='circle', rank='Readers')
         else:
             graph.node(document, docNodeLabel, shape='circle', rank='Readers')
         users = findReaders(document)
