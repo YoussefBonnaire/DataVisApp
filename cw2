@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 import Reader
 import Viewer
-import alsoLikes
+import AlsoLikes
 from GUI import MyGUIInterface
 
 parser = argparse.ArgumentParser(prog='cw2', description='Perform tasks for F21SC cw2.',
@@ -106,7 +106,7 @@ elif args.t == '4':
 
 elif args.t == '5d':
     try:
-        likes = alsoLikes.alsoLikes(args.d, args.u, database=args.f)
+        likes = AlsoLikes.alsoLikes(args.d, args.u, database=args.f)
         if likes == []:
             print('No views for this document/user match')
         else:
@@ -116,7 +116,7 @@ elif args.t == '5d':
 
 elif args.t == '6':
     try:
-        graph = alsoLikes.buildGraph(args.d, args.u, database=args.f)
+        graph = AlsoLikes.buildGraph(args.d, args.u, database=args.f)
         graph.render(view=True)
     except ValueError: print('No views for this document/database match')
 
