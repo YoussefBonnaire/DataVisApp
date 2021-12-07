@@ -20,7 +20,7 @@ def userHasRead(user, database='issuu_cw2.json'):
     df = pd.read_json(database, lines=True)
     df = df[df.visitor_uuid == user]
     df = df[df.event_type == 'read']
-    documents = df['env_doc_id']
+    documents = df['subject_doc_id']
     return documents.values
 
 
@@ -37,19 +37,8 @@ def sortDocumentsAsc(documents):
     return documents
 
 #  Find most read
-def findTop(documentIn,userIn):
-    sorty=[]
-    users = findReaders(documentIn)
-    if userIn is not None:
-        numpy.append(users, userIn)
-    sorty = []
-    for user in users:
-        userDocs = userHasRead(user)
-        print(user)
-        print(userDocs)
-        sorty.extend(userDocs)
-    sorty.sort(key=Counter(sorty).get, reverse=True)
-    sorty = list(dict.fromkeys(sorty))
+def findTop(documents,documentIn):
+    sorty=documents.copy()
     sorty.remove(documentIn)
     return sorty[0]
 
@@ -75,7 +64,7 @@ def alsoLikes(document, userIn=None, sortF=sortDocumentsDesc):
 def buildGraph(documentIn, userIn=None, sortF=sortDocumentsDesc):
     documents = alsoLikes(documentIn, userIn, sortF)
     graph = graphviz.Digraph()
-    topDocument = findTop(documentIn, userIn)
+    topDocument = findTop(documents, documentIn)
 
     graph.node('Documents', 'Documents', shape='plaintext', rank='Documents')
     graph.node('Readers', 'Readers', shape='plaintext', rank='Readers')

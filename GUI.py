@@ -279,7 +279,7 @@ class MyGUIInterface:
         if self.Drop_Down_sort.get() == 'Most read':
             self.graph_alsoLikes(alsoLikes.sortDocumentsDesc)
         else:
-            self.graph_alsoLikes(alsoLikes.sortDocumentsDesc)
+            self.graph_alsoLikes(alsoLikes.sortDocumentsAsc)
 
     def graph_alsoLikes(self, sort):
         doc = self.document_also.get()
