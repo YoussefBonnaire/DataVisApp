@@ -1,6 +1,6 @@
 ## Example 1
 import argparse
-from tkinter import Tk,StringVar
+from tkinter import Tk
 import matplotlib.pyplot as plt
 
 import Reader
@@ -101,8 +101,8 @@ elif args.t == '6':
 elif args.t == '7':
     root = Tk()
     gui = MyGUIInterface(root)
-    gui.document_also = StringVar(gui.master,args.d)
-    gui.user_also = StringVar(gui.master,args.u)
-    gui.database_also = StringVar(gui.master,args.f)
-    gui.graph_alsoLikes()
+    gui.master.setvar(name='documentId_also', value= args.d)
+    gui.master.setvar(name='userId_also', value= args.u)
+    gui.master.setvar(name='database_also', value= args.f)
+    gui.graph_alsoLikes('<Button-1>')
     root.mainloop()

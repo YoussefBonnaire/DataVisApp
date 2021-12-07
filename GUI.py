@@ -20,11 +20,11 @@ class MyGUIInterface:
     def __init__(self, master):
         # Declaration of Variables
         self.master = master
-        self.document = StringVar()
-        self.database = StringVar(master, value='issuu_cw2.json')
-        self.document_also = StringVar()
-        self.user_also = StringVar()
-        self.database_also = StringVar(master, value='issuu_cw2.json')
+        self.document = StringVar(name='documentId')
+        self.database = StringVar(master, value='issuu_cw2.json', name='database')
+        self.document_also = StringVar(name='documentId_also')
+        self.user_also = StringVar(name='userId_also')
+        self.database_also = StringVar(master, value='issuu_cw2.json', name='database_also')
         self.background = self.text_colour_buttons = '#ffffff'
         self.frame_background = '#010523'
         self.text_colour = '#000000'
@@ -121,7 +121,7 @@ class MyGUIInterface:
         graph = Button(self.master, text='Display Graph', width=21, bg=self.button_colour,
                        activebackground=self.frame_background, fg=self.text_colour_buttons,
                        activeforeground=self.text_colour_buttons)
-        graph.bind('<Button-1>', self.sort_choice)
+        graph.bind('<Button-1>', self.graph_alsoLikes)
 
         display.bind('<Button-1>', self.view_display)
 
@@ -281,11 +281,7 @@ class MyGUIInterface:
         toolbar.update()
         toolbar.grid(row=5, column=0, columnspan=5, sticky='news')
 
-    def sort_choice(self, event):
-        if self.Drop_Down_sort.get() == 'Most read':
-            self.graph_alsoLikes()
-
-    def graph_alsoLikes(self, sort=None):
+    def graph_alsoLikes(self, event):
         if type(self.document_also) is not str:
             doc = self.document_also.get()
         else:
@@ -298,8 +294,11 @@ class MyGUIInterface:
             user = self.user_also.get()
         else:
             user = self.user_also
-
-        graph = alsoLikes.buildGraph(documentIn=doc, userIn=user)
+        if self.Drop_Down_sort.get() == 'Most read':
+            sortF = alsoLikes.sortDocuments
+        elif self.Drop_Down_sort.get() == 'Least read':
+            sortF = None
+        graph = alsoLikes.buildGraph(documentIn=doc, userIn=user, sortF=sortF)
         graph.render('current_graph')
         graph_im = Image.open("./current_graph.png")
         graph = ImageTk.PhotoImage(graph_im)
