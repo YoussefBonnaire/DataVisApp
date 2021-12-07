@@ -1,6 +1,6 @@
 import Reader
 import Viewer
-import alsoLikes
+import AlsoLikes
 
 
 def main():
@@ -14,16 +14,16 @@ def main():
     browsers = Viewer.Get_browser_clean(document)
     print(browsers)
 
-    documents = alsoLikes.userHasRead(user)
+    documents = AlsoLikes.userHasRead(user)
     print('The user has read')
     print(documents)
     print('Document 1 has been read by')
-    users = alsoLikes.findReaders(documents[0])
+    users = AlsoLikes.findReaders(documents[0])
     print(users)
     print('Users who like document 1 also like')
-    alsoDocs = alsoLikes.alsoLikes(documents[0], None, alsoLikes.sortDocumentsAsc)
+    alsoDocs = AlsoLikes.alsoLikes(documents[0], None, AlsoLikes.sortDocumentsAsc)
     print(alsoDocs)
-    alsoDocs = alsoLikes.alsoLikes(documents[0], None, alsoLikes.sortDocumentsDesc)
+    alsoDocs = AlsoLikes.alsoLikes(documents[0], None, AlsoLikes.sortDocumentsDesc)
     print(alsoDocs)
 
     top10 = Reader.top10()

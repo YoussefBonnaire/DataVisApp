@@ -8,7 +8,7 @@ from pandastable import Table
 
 import Reader
 import Viewer
-import alsoLikes
+import AlsoLikes
 
 matplotlib.use("TkAgg")
 
@@ -299,10 +299,10 @@ class MyGUIInterface:
             database = self.database_also.get()
             user = self.user_also.get()
             if self.Drop_Down_sort.get() == 'Most read':
-                sortF = alsoLikes.sortDocumentsDesc
+                sortF = AlsoLikes.sortDocumentsDesc
             elif self.Drop_Down_sort.get() == 'Least read':
-                sortF = alsoLikes.sortDocumentsAsc
-            graph = alsoLikes.buildGraph(documentIn=doc, userIn=user, sortF=sortF, database=database)
+                sortF = AlsoLikes.sortDocumentsAsc
+            graph = AlsoLikes.buildGraph(documentIn=doc, userIn=user, sortF=sortF, database=database)
             graph.render('current_graph')
             graph_im = Image.open("./current_graph.png")
             graph = ImageTk.PhotoImage(graph_im)
