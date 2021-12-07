@@ -54,7 +54,7 @@ def alsoLikes(document, userIn=None, sortF=sortDocumentsDesc, database='issuu_cw
     users = findReaders(document, database=database)
     if userIn is not None:
         if users.__contains__(userIn):
-            numpy.delete(userIn)
+            numpy.delete(users, userIn)
     documents = []
     for user in users:
         userDocs = userHasRead(user, database=database)
