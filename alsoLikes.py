@@ -53,7 +53,8 @@ def findTop(documents, documentIn):
 def alsoLikes(document, userIn=None, sortF=sortDocumentsDesc, database='issuu_cw2.json'):
     users = findReaders(document, database=database)
     if userIn is not None:
-        numpy.append(users, userIn)
+        if users.__contains__(userIn):
+            numpy.delete(userIn)
     documents = []
     for user in users:
         userDocs = userHasRead(user, database=database)
