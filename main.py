@@ -1,3 +1,4 @@
+import Reader
 import Viewer
 import alsoLikes
 
@@ -25,8 +26,33 @@ def main():
     alsoDocs = alsoLikes.alsoLikes(documents[0], None, alsoLikes.sortDocumentsDesc)
     print(alsoDocs)
 
-    # top10 = Reader.top10()
-    # print(top10)
+    top10 = Reader.top10()
+    print(top10)
+
+    incorrect_document = 1
+    incorrect_user = 5
+    country_group, df = Viewer.Get_countries(incorrect_document)
+    print(country_group)
+    continents = Viewer.Get_continents(df)
+    print(continents)
+    browsers = Viewer.Get_browser_clean(incorrect_document)
+    print(browsers)
+
+    top10 = Reader.top10(database='incorrect')
+    print(top10)
+
+    documents = alsoLikes.userHasRead(incorrect_user)
+    print('The user has read')
+    print(documents)
+    print('Document 1 has been read by')
+    users = alsoLikes.findReaders(documents[0])
+    print(users)
+    print('Users who like document 1 also like')
+    alsoDocs = alsoLikes.alsoLikes(documents[0], None, alsoLikes.sortDocumentsAsc)
+    print(alsoDocs)
+    alsoDocs = alsoLikes.alsoLikes(documents[0], None, alsoLikes.sortDocumentsDesc)
+    print(alsoDocs)
+
     return 0
 
 
