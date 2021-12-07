@@ -38,65 +38,87 @@ parser.add_argument('-f',
 args = parser.parse_args()
 
 if args.t == '2a':
-    countries, _ = Viewer.Get_countries(args.d, args.f)
-    ax1 = plt.gca()
-    if type(countries) is not str:
-        countries.plot(kind='bar', ax=ax1)
-        ax1.set_ylabel('Number of viewers')
-        ax1.set_xlabel('Countries')
-        ax1.set_title('Views by country')
-        plt.show()
-    else:
-        print(countries)
+    try:
+        countries, _ = Viewer.Get_countries(args.d, args.f)
+        ax1 = plt.gca()
+        if type(countries) is not str:
+            countries.plot(kind='bar', ax=ax1)
+            ax1.set_ylabel('Number of viewers')
+            ax1.set_xlabel('Countries')
+            ax1.set_title('Views by country')
+            plt.show()
+        else:
+            print(countries)
+    except ValueError:
+        print('Wrong database')
 
 elif args.t == '2b':
-    _, countries = Viewer.Get_countries(args.d, args.f)
-    continents = Viewer.Get_continents(countries)
-    ax1 = plt.gca()
-    if type(continents) is not str:
-        continents.plot(kind='bar', ax=ax1)
-        ax1.set_ylabel('Number of viewers')
-        ax1.set_xlabel('Continents')
-        ax1.set_title('Views by Continents')
-        plt.show()
-    else:
-        print(continents)
+    try:
+        _, countries = Viewer.Get_countries(args.d, args.f)
+        continents = Viewer.Get_continents(countries)
+        ax1 = plt.gca()
+        if type(continents) is not str:
+            continents.plot(kind='bar', ax=ax1)
+            ax1.set_ylabel('Number of viewers')
+            ax1.set_xlabel('Continents')
+            ax1.set_title('Views by Continents')
+            plt.show()
+        else:
+            print(continents)
+    except ValueError:
+        print('Wrong database')
 
 elif args.t == '3a':
-    browsers = Viewer.Get_browser(args.d, args.f)
-    ax1 = plt.gca()
-    if type(browsers) is not str:
-        browsers.plot(kind='bar', ax=ax1)
-        ax1.set_ylabel('Number of viewers')
-        ax1.set_xlabel('Browsers')
-        ax1.set_title('Views by Browsers')
-        plt.show()
-    else:
-        print(browsers)
+    try:
+        browsers = Viewer.Get_browser(args.d, args.f)
+        ax1 = plt.gca()
+        if type(browsers) is not str:
+            browsers.plot(kind='bar', ax=ax1)
+            ax1.set_ylabel('Number of viewers')
+            ax1.set_xlabel('Browsers')
+            ax1.set_title('Views by Browsers')
+            plt.show()
+        else:
+            print(browsers)
+    except ValueError:
+        print('Wrong database')
 
 elif args.t == '3b':
-    browsers = Viewer.Get_browser_clean(args.d, args.f)
-    ax1 = plt.gca()
-    if type(browsers) is not str:
-        browsers.plot(kind='bar', ax=ax1)
-        ax1.set_ylabel('Number of viewers')
-        ax1.set_xlabel('Browsers')
-        ax1.set_title('Views by Browsers')
-        plt.show()
-    else:
-        print(browsers)
+    try:
+        browsers = Viewer.Get_browser_clean(args.d, args.f)
+        ax1 = plt.gca()
+        if type(browsers) is not str:
+            browsers.plot(kind='bar', ax=ax1)
+            ax1.set_ylabel('Number of viewers')
+            ax1.set_xlabel('Browsers')
+            ax1.set_title('Views by Browsers')
+            plt.show()
+        else:
+            print(browsers)
+    except ValueError:
+        print('Wrong database')
 
 elif args.t == '4':
-    top10 = Reader.top10(args.f)
-    print(top10)
+    try:
+        top10 = Reader.top10(args.f)
+        print(top10)
+    except ValueError: print('Incorrect database')
 
 elif args.t == '5d':
-    likes = alsoLikes.alsoLikes(args.d, args.u, database=args.f)
-    print(likes)
+    try:
+        likes = alsoLikes.alsoLikes(args.d, args.u, database=args.f)
+        if likes == []:
+            print('No views for this document/user match')
+        else:
+            print(likes)
+    except ValueError: print('No views for this document/user match')
+
 
 elif args.t == '6':
-    graph = alsoLikes.buildGraph(args.d, args.u, database=args.f)
-    graph.render()
+    try:
+        graph = alsoLikes.buildGraph(args.d, args.u, database=args.f)
+        graph.render(view=True)
+    except ValueError: print('No views for this document/database match')
 
 elif args.t == '7':
     root = Tk()

@@ -271,14 +271,14 @@ class MyGUIInterface:
 
     def reader_display(self, event):
         """Displays top 10 most avid reader table on left side when Show Top 10 readers button is clicked"""
-        top10 = Reader.top10(self.database.get())
-        if not top10.empty:
+        try:
+            top10 = Reader.top10(self.database.get())
             f = Frame(self.master)
             f.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
             self.left_canvas = pt = Table(f, dataframe=top10,
                                           showtoolbar=True, showstatusbar=True)
             pt.show()
-        else:
+        except:
             no_views = Label(self.master, text='Database empty', anchor='center', font=100,
                              width=24, bg=self.background, fg=self.text_colour)
             no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
@@ -311,7 +311,7 @@ class MyGUIInterface:
             graph_label.grid(row=4, column=7, columnspan=7, rowspan=2, sticky='news')
         except:
             no_views = Label(self.master,
-                             text='Invalid User Id, Document Id or Database. Please make sure inputs are correct',
+                             text='Invalid Document Id or Database. Please make sure inputs are correct',
                              anchor='center', font=100, width=24, bg=self.background, fg=self.text_colour)
             no_views.grid(row=4, column=7, columnspan=7, rowspan=2, sticky='news')
 
