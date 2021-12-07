@@ -1,12 +1,10 @@
 import pandas as pd
 import pycountry_convert as cconv
 
-dataset = pd.read_json('issuu_cw2.json', lines=True)
 
-
-# Takes in string for document and optionally database and returns grouped-by pandas dataframe to plot viewers by
-# country and a dataframe for continents to use.
 def Get_countries(document, database='issuu_cw2.json'):
+    """Takes in document string and optionally a dataset and outputs a dataframe of the views by country on this
+    document and database of views """
     df = views(document, database)
     country_group = df.groupby(['visitor_country']).size()
     if country_group.empty:
@@ -14,8 +12,9 @@ def Get_countries(document, database='issuu_cw2.json'):
     return country_group, df
 
 
-# Takes in dataframe produced by Get_countries and outputs the continent version to plot the viewers by continent
 def Get_continents(df):
+    """Takes in database of views produced by Get_countries and outputs a dataframe of the views by continent on this
+    document """
     if df.empty:
         return 'No views for this document'
     continents = pd.DataFrame(df['visitor_country']).applymap(cconv.country_alpha2_to_continent_code)
@@ -23,9 +22,9 @@ def Get_continents(df):
     return continent_groups
 
 
-# Takes in string for document and optionally database and returns grouped-by pandas dataframe to plot viewers by
-# browser
 def Get_browser(document, database='issuu_cw2.json'):
+    """Takes in document string and optionally a dataset and outputs a dataframe of the views by Browser on this
+    document """
     df = views(document, database)
     browsers = df.groupby(['visitor_useragent']).size()
     if browsers.empty:
@@ -34,6 +33,8 @@ def Get_browser(document, database='issuu_cw2.json'):
 
 
 def Get_browser_clean(document, database='issuu_cw2.json'):
+    """Takes in document string and optionally a dataset and outputs a dataframe of the views by Browser without
+    excess non browser information on this document """
     df = views(document, database)
     df.visitor_useragent = df.visitor_useragent.str.split('/').str[0]
     browsers = df.groupby(['visitor_useragent']).size()
@@ -44,6 +45,7 @@ def Get_browser_clean(document, database='issuu_cw2.json'):
 
 # Helper function to reduce duplicate lines
 def views(document, database='issuu_cw2.json'):
+    """Takes in documents and optionally a dataset and outputs a dataframe of the views on this document"""
     df = pd.read_json(database, lines=True)
     df = df[df.subject_doc_id == document]
     df = df[df.event_type == 'read']

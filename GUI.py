@@ -294,18 +294,9 @@ class MyGUIInterface:
 
     def graph_alsoLikes(self, event):
         """Displays Also likes graph on right canvas when right display button is clicked"""
-        if type(self.document_also) is not str:
-            doc = self.document_also.get()
-        else:
-            doc = self.document_also
-        if type(self.database_also) is not str:
-            database = self.database_also.get()
-        else:
-            database = self.database_also
-        if type(self.user_also) is not str:
-            user = self.user_also.get()
-        else:
-            user = self.user_also
+        doc = self.document_also.get()
+        database = self.database_also.get()
+        user = self.user_also.get()
         if self.Drop_Down_sort.get() == 'Most read':
             sortF = alsoLikes.sortDocumentsDesc
         elif self.Drop_Down_sort.get() == 'Least read':
