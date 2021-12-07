@@ -278,13 +278,15 @@ class MyGUIInterface:
 
     def sort_choice(self, event):
         if self.Drop_Down_sort.get() == 'Most read':
-            self.graph_alsoLikes()
+            self.graph_alsoLikes(alsoLikes.sortDocumentsDesc)
+        else:
+            self.graph_alsoLikes(alsoLikes.sortDocumentsDesc)
 
-    def graph_alsoLikes(self, sort=None):
+    def graph_alsoLikes(self, sort):
         doc = self.document_also.get()
         database = self.database_also.get()
         user = self.user_also.get()
-        graph = alsoLikes.buildGraph(documentIn=doc, userIn=user)
+        graph = alsoLikes.buildGraph(documentIn=doc, userIn=user, sortF=sort)
         graph.render('current_graph')
         graph_im = Image.open("./current_graph.png")
         graph = ImageTk.PhotoImage(graph_im)
