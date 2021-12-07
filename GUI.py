@@ -43,6 +43,7 @@ class MyGUIInterface:
         master.configure(background=self.background)
 
     def body(self):
+        """Defines the body of the interface, grid, frames, labels, entry boxes, buttons and their positioning"""
         # Configure grid
         self.master.rowconfigure(0, weight=3)
         self.master.rowconfigure(1, weight=1)
@@ -163,6 +164,8 @@ class MyGUIInterface:
         exit_button.grid(row=0, column=12, sticky="ne")
 
     def view_display(self, event):
+        """Allows to choose which graph is displayed on the left side of gui, called using Display button on left
+        side """
         if self.Drop_Down_views.get() == 'Country':
             self.country_click()
         if self.Drop_Down_views.get() == 'Continent':
@@ -172,20 +175,8 @@ class MyGUIInterface:
         if self.Drop_Down_views.get() == 'All':
             self.all_click()
 
-    def reader_display(self, event):
-        top10 = Reader.top10(self.database.get())
-        if not top10.empty:
-            f = Frame(self.master)
-            f.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
-            self.left_canvas = pt = Table(f, dataframe=top10,
-                                          showtoolbar=True, showstatusbar=True)
-            pt.show()
-        else:
-            no_views = Label(self.master, text='Database empty', anchor='center', font=100,
-                             width=24, bg=self.background, fg=self.text_colour)
-            no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
-
     def country_click(self):
+        """Displays view by country graph on left side"""
         doc = self.document.get()
         database = self.database.get()
         country_group, _ = Viewer.Get_countries(doc, database)
@@ -205,6 +196,7 @@ class MyGUIInterface:
             no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def continent_click(self):
+        """Displays view by continent graph on left side"""
         doc = self.document.get()
         database = self.database.get()
         _, countries = Viewer.Get_countries(doc, database)
@@ -225,6 +217,7 @@ class MyGUIInterface:
             no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def browser_click(self):
+        """Displays view by browsers graph on left side"""
         doc = self.document.get()
         database = self.database.get()
         browser_group = Viewer.Get_browser_clean(doc, database)
@@ -244,6 +237,7 @@ class MyGUIInterface:
             no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
     def all_click(self):
+        """Displays view by country, continent and browser graphs on left side"""
         doc = self.document.get()
         country_groups, countries = Viewer.Get_countries(doc)
         continent_groups = Viewer.Get_continents(countries)
@@ -273,7 +267,22 @@ class MyGUIInterface:
                              width=24, bg=self.background, fg=self.text_colour)
             no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
 
+    def reader_display(self, event):
+        """Displays top 10 most avid reader table on left side when Show Top 10 readers button is clicked"""
+        top10 = Reader.top10(self.database.get())
+        if not top10.empty:
+            f = Frame(self.master)
+            f.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
+            self.left_canvas = pt = Table(f, dataframe=top10,
+                                          showtoolbar=True, showstatusbar=True)
+            pt.show()
+        else:
+            no_views = Label(self.master, text='Database empty', anchor='center', font=100,
+                             width=24, bg=self.background, fg=self.text_colour)
+            no_views.grid(row=4, column=0, columnspan=5, rowspan=2, sticky='news')
+
     def draw_canvas(self, fig, plot):
+        """Helper function to draw on left canvas"""
         self.left_canvas = FigureCanvasTkAgg(fig, plot)
         self.left_canvas.draw()
         self.left_canvas.get_tk_widget().grid(row=4, column=0, columnspan=5, sticky='news', ipadx=0, ipady=0)
@@ -282,6 +291,7 @@ class MyGUIInterface:
         toolbar.grid(row=5, column=0, columnspan=5, sticky='news')
 
     def graph_alsoLikes(self, event):
+        """Displays Also likes graph on right canvas when right display button is clicked"""
         if type(self.document_also) is not str:
             doc = self.document_also.get()
         else:
@@ -307,6 +317,7 @@ class MyGUIInterface:
         graph_label.grid(row=4, column=7, columnspan=7, rowspan=2, sticky='news')
 
     def closeGUI(self, event):
+        """Closes GUI when exit in top right is clicked"""
         self.master.destroy()
 
 
