@@ -14,8 +14,7 @@ from matplotlib.figure import Figure
 
 
 class MyGUIInterface:
-    LABEL_TEXT = ['This is the Interface package.',
-                  'This is the class for GUI,']
+    """This is the Interface package. with the class for GUI"""
 
     def __init__(self, master):
         # Declaration of Variables
